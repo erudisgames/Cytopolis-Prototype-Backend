@@ -1,1 +1,3 @@
-var TEST_TITLE_ID: string = "6195";
+import Controller from './controller';
+
+handlers["CreateCharacter"] = Controller.CreateCharacter;

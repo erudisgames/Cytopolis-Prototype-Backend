@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true,
-    "outDir": "build"
+    "target": "es6",
+    "preserveConstEnums": true,
+    "outDir": "."
   },
   "exclude": [
     "node_modules"
   ],
   "include": [
-    "src/scripts/**/*"
+    "src/scripts/**/*",
+    "Scripts/typings/PlayFab/PlayStream.d.ts",
+    "Scripts/typings/PlayFab/CloudScript.d.ts"
   ]
 }
