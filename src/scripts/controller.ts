@@ -3,6 +3,7 @@ interface ICreateCharacter {
 }
 
 function CreateCharacter(args: ICreateCharacter): boolean {
+    log.info("hello World!");
     return true;
 }
 
