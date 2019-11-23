@@ -7,4 +7,4 @@ function CreateCharacter(args: ICreateCharacter): boolean {
     return true;
 }
 
-export default {CreateCharacter};
+const Controller = {CreateCharacter};
