@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "module": "es6",
+    "module": "amd",
     "target": "es6",
     "preserveConstEnums": true,
     "outDir": ".",
+    "outFile": "main.js",
     "noImplicitUseStrict": true
   },
   "exclude": [
