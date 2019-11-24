@@ -1,0 +1,24 @@
+{
+  "name": "biology-poc",
+  "version": "1.0.0",
+  "description": "cloud functions for biology poc",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erudisgames/Biology-POC.git"
+  },
+  "author": "Johan de Bruin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/erudisgames/Biology-POC/issues"
+  },
+  "homepage": "https://github.com/erudisgames/Biology-POC#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.23",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.2"
+  }
+}

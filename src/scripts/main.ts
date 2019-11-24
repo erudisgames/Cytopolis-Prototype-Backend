@@ -1,1 +1,0 @@
-handlers["CreateCharacter"] = Controller.CreateCharacter;
