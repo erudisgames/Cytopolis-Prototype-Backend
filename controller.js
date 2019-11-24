@@ -1,3 +1,6 @@
+/**
+ * @return {boolean}
+ */
 function CreateCharacter(args) {
     log.info("hello World!");
     return true;
