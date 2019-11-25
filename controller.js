@@ -1,6 +1,5 @@
 function CreateCharacter(args) {
-    log.info("hello World!");
-    return true;
+    CharacterHandler.createCharacter(args.characterName);
 }
 const Controller = { CreateCharacter };
 // TODO: comment for compilation
