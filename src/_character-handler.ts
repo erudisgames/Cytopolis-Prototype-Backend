@@ -1,5 +1,6 @@
-class CharacterHandler {
-    static createCharacter(characterName) {
+class CharacterHandler
+{
+    CreateCharacter(characterName : string): void {
         const grantCharRequest = {
             PlayFabId: currentPlayerId,
             CharacterName: characterName,
@@ -8,3 +9,5 @@ class CharacterHandler {
         server.GrantCharacterToUser(grantCharRequest);
     }
 }
+
+export default CharacterHandler;

@@ -1,11 +1,10 @@
 {
   "compilerOptions": {
-    "module": "none",
+    "module": "es6",
     "target": "es6",
     "preserveConstEnums": true,
     "outDir": ".",
     "noImplicitUseStrict": true,
-    "baseUrl": "./modules/",
     "esModuleInterop": true
   },
   "exclude": [
@@ -13,7 +12,6 @@
   ],
   "include": [
     "src/**/*",
-    "Scripts/typings/PlayFab/PlayStream.d.ts",
-    "Scripts/typings/PlayFab/CloudScript.d.ts"
+    "typings/**/*"
   ]
 }

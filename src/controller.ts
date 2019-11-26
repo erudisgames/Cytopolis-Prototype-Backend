@@ -1,12 +1,16 @@
-interface ICreateCharacter {
-    characterName: string;
+import CharacterHandler from "./_character-handler";
+
+class Controller {
+    CreateCharacter(args: ICreateCharacterController): void {
+        let container = Controller.GenerateContainer();
+        container.characterHandler.CreateCharacter(args.CharacterName);
+    }
+
+    private static GenerateContainer(): Container {
+        let container: Container;
+        container.characterHandler = new CharacterHandler();
+        return container;
+    }
 }
 
-function CreateCharacter(args: ICreateCharacter): void {
-    CharacterHandler.createCharacter(args.characterName);
-}
-
-const Controller = {CreateCharacter};
-
-// TODO: comment for compilation
-//export default Controller;
+export default Controller;

@@ -1,5 +1,6 @@
 import Controller from '../src/controller';
 
-test('basic', () => {
-    expect(Controller.CreateCharacter).toBeTruthy();
+test('controller should have a method named createCharacter', () => {
+    const controller = new Controller();
+    expect(controller.CreateCharacter).toBeTruthy();
 });
