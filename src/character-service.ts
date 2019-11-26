@@ -1,4 +1,4 @@
-class CharacterHandler
+class CharacterService
 {
     CreateCharacter(characterName : string): void {
         const grantCharRequest = {
@@ -10,4 +10,4 @@ class CharacterHandler
     }
 }
 
-export default CharacterHandler;
+export default CharacterService;

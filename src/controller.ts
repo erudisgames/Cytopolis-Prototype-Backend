@@ -1,15 +1,18 @@
-import CharacterHandler from "./_character-handler";
+import CharacterService from "./character-service";
+import ServiceLocator from "./service-locator";
 
 class Controller {
-    CreateCharacter(args: ICreateCharacterController): void {
-        let container = Controller.GenerateContainer();
-        container.characterHandler.CreateCharacter(args.CharacterName);
+    constructor()
+    {
+        Controller.registerServices();
     }
 
-    private static GenerateContainer(): Container {
-        let container: Container;
-        container.characterHandler = new CharacterHandler();
-        return container;
+    CreateCharacter(args: ICreateCharacterController): void {
+        ServiceLocator.resolve(CharacterService).CreateCharacter(args.CharacterName);
+    }
+
+    private static registerServices(): void {
+        ServiceLocator.register(CharacterService, new CharacterService());
     }
 }
 

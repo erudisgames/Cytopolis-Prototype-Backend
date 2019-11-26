@@ -1,7 +1,4 @@
-// Controller
-interface Container {
-    characterHandler: CharacterHandler
-}
+import GrantItemsToCharacterResult = PlayFabServerModels.GrantItemsToCharacterResult;
 
 interface ICreateCharacterController {
     CharacterName: string;
@@ -19,8 +16,3 @@ interface IEquipOrganelleController {
 }
 
 declare const ATP_CURRENCY = 'AP';
-
-// CharacterHandler
-interface CharacterHandler {
-    CreateCharacter(characterName : string) : void;
-}
