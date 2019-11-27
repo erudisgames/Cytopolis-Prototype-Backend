@@ -20,11 +20,8 @@ class ServiceLocator {
 ServiceLocator.initialised = false;
 
 class CharacterInventoryService {
-    constructor() {
-        this.currentPlayerId = currentPlayerId;
-    }
     FetchItems() {
-        let itemsRequest = { CharacterId: this.characterId, PlayFabId: this.currentPlayerId };
+        let itemsRequest = { CharacterId: this.characterId, PlayFabId: currentPlayerId };
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
         this.characterItems = itemsResponse.Inventory;
     }
@@ -32,7 +29,7 @@ class CharacterInventoryService {
         const itemsGrantRequest = {
             CharacterId: this.characterId,
             ItemIds: itemIds,
-            PlayFabId: this.currentPlayerId
+            PlayFabId: currentPlayerId
         };
         const itemsGrantResult = server.GrantItemsToCharacter(itemsGrantRequest);
         if (itemsGrantResult.ItemGrantResults !== undefined) {
@@ -64,7 +61,7 @@ class CharacterInventoryService {
             CharacterId: this.characterId,
             Data: data,
             ItemInstanceId: itemInstanceId,
-            PlayFabId: this.currentPlayerId
+            PlayFabId: currentPlayerId
         };
         server.UpdateUserInventoryItemCustomData(customDataUpdateRequest);
         const updatedItem = this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
@@ -89,13 +86,10 @@ class CharacterService {
 }
 
 class CurrencyService {
-    constructor() {
-        this.currentPlayerId = currentPlayerId;
-    }
     Remove(amount, type) {
         const subtractRequest = {
             Amount: amount,
-            PlayFabId: this.currentPlayerId,
+            PlayFabId: currentPlayerId,
             VirtualCurrency: type
         };
         return server.SubtractUserVirtualCurrency(subtractRequest);

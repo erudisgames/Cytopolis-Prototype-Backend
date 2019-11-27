@@ -9,12 +9,11 @@ import ConsumeItemResult = PlayFabServerModels.ConsumeItemResult;
 class CharacterInventoryService {
     // TODO: currently we assume that the handler is only used to fetch one character items
     public characterId : string;
-    public currentPlayerId : string = currentPlayerId;
     public characterItems : ItemInstance[] | undefined;
 
     FetchItems() : void
     {
-        let itemsRequest : GetCharacterInventoryRequest = {CharacterId: this.characterId, PlayFabId: this.currentPlayerId};
+        let itemsRequest : GetCharacterInventoryRequest = {CharacterId: this.characterId, PlayFabId: currentPlayerId};
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
         this.characterItems = itemsResponse.Inventory;
     }
@@ -24,7 +23,7 @@ class CharacterInventoryService {
         const itemsGrantRequest : GrantItemsToCharacterRequest = {
             CharacterId: this.characterId,
             ItemIds: itemIds,
-            PlayFabId: this.currentPlayerId
+            PlayFabId: currentPlayerId
         };
         const itemsGrantResult = server.GrantItemsToCharacter(itemsGrantRequest);
 
@@ -68,7 +67,7 @@ class CharacterInventoryService {
             CharacterId: this.characterId,
             Data: data,
             ItemInstanceId: itemInstanceId,
-            PlayFabId: this.currentPlayerId
+            PlayFabId: currentPlayerId
         };
         server.UpdateUserInventoryItemCustomData(customDataUpdateRequest);
 
