@@ -1,6 +1,6 @@
-import CharacterService from '../src/character-service';
+import CharacterService from '../src/services/character-service';
 
 test('CharacterService should have a static method named createCharacter', () => {
     const characterHandler = new CharacterService();
-    expect(characterHandler.CreateCharacter).toBeTruthy();
+    expect(characterHandler.Create).toBeTruthy();
 });

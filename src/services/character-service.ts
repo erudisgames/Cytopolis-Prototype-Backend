@@ -1,6 +1,6 @@
 class CharacterService
 {
-    CreateCharacter(characterName : string): void {
+    Create(characterName : string): void {
         const grantCharRequest = {
             PlayFabId: currentPlayerId,
             CharacterName: characterName,

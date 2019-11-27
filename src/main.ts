@@ -1,5 +1,9 @@
 import Controller from "./controller";
 
-let controller = new Controller();
-
+const controller = new Controller();
 handlers["CreateCharacter"] = controller.CreateCharacter;
+handlers["PurchaseOrganelle"] = controller.PurchaseOrganelle;
+handlers["EquipOrganelle"] = controller.EquipOrganelle;
+handlers["PurchaseEnzyme"] = controller.PurchaseEnzyme;
+handlers["EquipEnzyme"] = controller.EquipEnzyme;
+handlers["UnEquipEnzyme"] = controller.UnEquipEnzyme;

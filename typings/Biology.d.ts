@@ -1,18 +1,43 @@
-import GrantItemsToCharacterResult = PlayFabServerModels.GrantItemsToCharacterResult;
+declare const CURRENCY_ATP = 'AP';
 
-interface ICreateCharacterController {
-    CharacterName: string;
+interface ICreateCharacterController
+{
+    CharacterName : string;
 }
 
-interface IPurchaseOrganelleController {
-    OrganelleId: string,
-    AtpCost: number
+// OrganelleService
+interface IPurchaseOrganelleController
+{
+    CharacterId : string,
+    OrganelleId : string,
+    AtpCost : number
 }
 
-interface IEquipOrganelleController {
-    ItemId: string,
-    PosX: number,
-    PosY: number
+interface IEquipOrganelleController
+{
+    CharacterId : string,
+    OrganelleItemInstanceId : string,
+    PosX : number,
+    PosY : number
 }
 
-declare const ATP_CURRENCY = 'AP';
+// EnzymeService
+interface IPurchaseEnzymeController
+{
+    CharacterId : string,
+    EnzymeId : string,
+    OrganelleItemInstanceId : string,
+    costs : {[key : string] : number}
+}
+
+interface IEquipEnzymeController {
+    CharacterId : string,
+    EnzymeItemInstanceId : string,
+    OrganelleItemInstanceId : string
+}
+
+interface IUnEquipEnzymeController
+{
+    CharacterId : string,
+    EnzymeItemInstanceId : string
+}

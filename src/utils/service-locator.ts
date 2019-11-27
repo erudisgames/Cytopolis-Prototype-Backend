@@ -1,6 +1,18 @@
-import CharacterService from "./character-service";
+import CharacterService from "../services/character-service";
+import CharacterInventoryService from "../services/character-inventory-service";
+import CurrencyService from "../services/currency-service";
+import OrganelleService from "../services/organelle-service";
+import GeneratorService from "../services/generator-service";
+import EnzymeService from "../services/enzyme-service";
 
-export type IRegisteredClassesGeneric = CharacterService | undefined;
+export type IRegisteredClassesGeneric =
+    CharacterService |
+    CharacterInventoryService |
+    CurrencyService |
+    OrganelleService |
+    EnzymeService |
+    GeneratorService |
+    undefined;
 
 class ServiceLocator {
     static registeredClasses: Map<string, IRegisteredClassesGeneric>;

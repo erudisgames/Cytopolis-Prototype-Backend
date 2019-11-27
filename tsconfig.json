@@ -3,7 +3,7 @@
     "module": "es6",
     "target": "es6",
     "preserveConstEnums": true,
-    "outDir": ".",
+    "outDir": "dist",
     "noImplicitUseStrict": true,
     "esModuleInterop": true
   },
