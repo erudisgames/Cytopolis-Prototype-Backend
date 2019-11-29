@@ -92,7 +92,7 @@ class CharacterInventoryService {
         const updatedItem = this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
         if (updatedItem)
         {
-            for (const key in Object.getOwnPropertyNames(data))
+            for (const key of Object.getOwnPropertyNames(data))
             {
                 updatedItem.CustomData[key] = data[key];
             }
