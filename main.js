@@ -50,20 +50,23 @@ class CharacterInventoryService {
     }
     ConsumeItems(items) {
         const consumeItemResults = [];
-        for (const key in items) {
+        for (const key of Object.getOwnPropertyNames(items)) {
             const itemInstanceId = key;
             const amount = items[key];
             const consumeRequest = {
-                CharacterId: "",
-                ConsumeCount: 0,
-                ItemInstanceId: "",
-                PlayFabId: ""
+                CharacterId: this.characterId,
+                ConsumeCount: amount,
+                ItemInstanceId: itemInstanceId,
+                PlayFabId: currentPlayerId
             };
             consumeItemResults.push(server.ConsumeItem(consumeRequest));
         }
         consumeItemResults.forEach(c => {
             const localItem = this.characterItems.find(i => i.ItemInstanceId === c.ItemInstanceId);
-            localItem.RemainingUses = c.RemainingUses;
+            // TODO: log error
+            if (localItem) {
+                localItem.RemainingUses = c.RemainingUses;
+            }
         });
         return consumeItemResults;
     }
@@ -154,7 +157,7 @@ class GeneratorService {
         const dataService = ServiceLocator.resolve(TitleDataService);
         const invService = ServiceLocator.resolve(CharacterInventoryService);
         const generator = invService.characterItems.find(i => i.ItemInstanceId === generatorItemInstanceId);
-        const generatorTitleData = dataService.generators.find(g => g.Id === generator.ItemId);
+        const generatorTitleData = dataService.generators[generator.ItemId];
         const data = generator.CustomData;
         const value = GeneratorService.getGeneratorValue(data["startTime"], data["limit"], data["pace"]);
         if (generatorTitleData.ItemId === Constants.CURRENCY_ATP) {
@@ -176,8 +179,8 @@ class GeneratorService {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
         const dataService = ServiceLocator.resolve(TitleDataService);
         const enzyme = invService.GetLocalInventoryItem(enzymeItemInstanceId);
-        const enzymeTitleData = dataService.enzymes.find(e => e.Id === enzyme.ItemId);
-        const generatorTitleData = dataService.generators.find(g => g.Id === enzymeTitleData.GeneratorId);
+        const enzymeTitleData = dataService.enzymes[enzyme.ItemId];
+        const generatorTitleData = dataService.generators[enzymeTitleData.GeneratorId];
         const generator = invService.GrantItems([enzymeTitleData.Id]);
         const customData = GeneratorService.generateCustomData(generatorTitleData, enzymeItemInstanceId);
         invService.UpdateItemCustomData(generator.ItemGrantResults[0].ItemInstanceId, customData);
@@ -238,13 +241,14 @@ class OrganelleService {
 }
 class TitleDataService {
     constructor() {
-        this.generators = [];
-        this.enzymes = [];
+        this.enzymes = {};
+        this.generators = {};
     }
     FetchData() {
         // TODO: fetch organelles
         const titleDataRequest = { "Keys": ["Enzymes", "Generators"] };
         const titleDataResult = server.GetTitleData(titleDataRequest);
+        // TODO: abstract mechanisim
         if (titleDataResult.Data.hasOwnProperty("Enzymes")) {
             this.enzymes = JSON.parse(titleDataResult.Data["Enzymes"]);
         }

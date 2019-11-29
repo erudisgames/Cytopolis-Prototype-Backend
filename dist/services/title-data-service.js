@@ -1,12 +1,13 @@
 class TitleDataService {
     constructor() {
-        this.generators = [];
-        this.enzymes = [];
+        this.enzymes = {};
+        this.generators = {};
     }
     FetchData() {
         // TODO: fetch organelles
         const titleDataRequest = { "Keys": ["Enzymes", "Generators"] };
         const titleDataResult = server.GetTitleData(titleDataRequest);
+        // TODO: abstract mechanisim
         if (titleDataResult.Data.hasOwnProperty("Enzymes")) {
             this.enzymes = JSON.parse(titleDataResult.Data["Enzymes"]);
         }

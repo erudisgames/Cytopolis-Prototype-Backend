@@ -27,20 +27,23 @@ class CharacterInventoryService {
     }
     ConsumeItems(items) {
         const consumeItemResults = [];
-        for (const key in items) {
+        for (const key of Object.getOwnPropertyNames(items)) {
             const itemInstanceId = key;
             const amount = items[key];
             const consumeRequest = {
-                CharacterId: "",
-                ConsumeCount: 0,
-                ItemInstanceId: "",
-                PlayFabId: ""
+                CharacterId: this.characterId,
+                ConsumeCount: amount,
+                ItemInstanceId: itemInstanceId,
+                PlayFabId: currentPlayerId
             };
             consumeItemResults.push(server.ConsumeItem(consumeRequest));
         }
         consumeItemResults.forEach(c => {
             const localItem = this.characterItems.find(i => i.ItemInstanceId === c.ItemInstanceId);
-            localItem.RemainingUses = c.RemainingUses;
+            // TODO: log error
+            if (localItem) {
+                localItem.RemainingUses = c.RemainingUses;
+            }
         });
         return consumeItemResults;
     }

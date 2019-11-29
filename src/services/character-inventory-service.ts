@@ -50,16 +50,16 @@ class CharacterInventoryService {
     ConsumeItems(items: {[key: string]: number}) : ConsumeItemResult[]
     {
         const consumeItemResults : ConsumeItemResult[] = [];
-        for (const key in items)
+        for (const key of Object.getOwnPropertyNames(items))
         {
             const itemInstanceId = key;
             const amount = items[key];
 
             const consumeRequest : ConsumeItemRequest = {
-                CharacterId: "",
-                ConsumeCount: 0,
-                ItemInstanceId: "",
-                PlayFabId: ""
+                CharacterId: this.characterId,
+                ConsumeCount: amount,
+                ItemInstanceId: itemInstanceId,
+                PlayFabId: currentPlayerId
             };
 
             consumeItemResults.push(server.ConsumeItem(consumeRequest));
@@ -67,7 +67,11 @@ class CharacterInventoryService {
 
         consumeItemResults.forEach(c => {
            const localItem = this.characterItems.find(i => i.ItemInstanceId === c.ItemInstanceId);
-           localItem.RemainingUses = c.RemainingUses;
+           // TODO: log error
+           if (localItem)
+           {
+               localItem.RemainingUses = c.RemainingUses;
+           }
         });
 
         return consumeItemResults;
