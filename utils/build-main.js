@@ -31,8 +31,8 @@ function addFilesToReadFromDirectory(directory)
 function addFileContent(filename, callback) {
     return fs.readFile(filename, 'utf8', function(err, content) {
         if (!err) {
-            callback();
             filesContent += content;
+            callback();
         } else {
             console.log(err);
         }
@@ -48,6 +48,7 @@ function onDirectoryFilesAdded()
 function onFilesContentAdded()
 {
     const arrayOfLines = filesContent.match(/[^\r\n]+/g);
+
     const arrayWithoutModules = [];
     for (const line of arrayOfLines)
     {
@@ -58,7 +59,6 @@ function onFilesContentAdded()
         arrayWithoutModules.push(line);
     }
     const mainFile = arrayWithoutModules.join('\r\n');
-    console.log(mainFile);
 
     fs.writeFile(path.join(__dirname, '../main.js'), mainFile, (err) => {});
 }
