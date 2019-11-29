@@ -9,39 +9,44 @@ import GeneratorService from "./services/generator-service";
 class Controller {
     constructor() {
         Controller.registerServices();
-        const titleDataService = ServiceLocator.resolve(TitleDataService);
-        titleDataService.Fetch();
     }
     CreateCharacter(args) {
+        Controller.setupTitleData();
         const characterService = ServiceLocator.resolve(CharacterService);
         characterService.Create(args.CharacterName);
     }
     PurchaseOrganelle(args) {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const organelleService = ServiceLocator.resolve(OrganelleService);
         organelleService.Purchase(args.OrganelleId, args.AtpCost);
     }
     EquipOrganelle(args) {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const organelleService = ServiceLocator.resolve(OrganelleService);
         organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString());
     }
     PurchaseEnzyme(args) {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const enzymeService = ServiceLocator.resolve(EnzymeService);
         enzymeService.Purchase(args.EnzymeId, args.costs, args.OrganelleItemInstanceId);
     }
     EquipEnzyme(args) {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const enzymeService = ServiceLocator.resolve(EnzymeService);
         enzymeService.Equip(args.EnzymeItemInstanceId, args.OrganelleItemInstanceId);
     }
     UnEquipEnzyme(args) {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const enzymeService = ServiceLocator.resolve(EnzymeService);
         enzymeService.UnEquip(args.EnzymeItemInstanceId);
     }
     ClaimGenerator(args) {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const generatorService = ServiceLocator.resolve(GeneratorService);
         generatorService.Claim(args.generatorItemInstanceId);
@@ -50,6 +55,10 @@ class Controller {
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
         inventoryService.characterId = characterId;
         inventoryService.FetchItems();
+    }
+    static setupTitleData() {
+        const titleDataService = ServiceLocator.resolve(TitleDataService);
+        titleDataService.FetchData();
     }
     static registerServices() {
         ServiceLocator.register(TitleDataService, new TitleDataService());

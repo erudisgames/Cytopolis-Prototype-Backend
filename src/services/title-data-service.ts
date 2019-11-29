@@ -3,20 +3,20 @@ class TitleDataService
     public generators : GeneratorTitleData[];
     public enzymes : EnzymeTitleData[];
 
-    public Fetch() : void
+    public FetchData() : void
     {
         // TODO: fetch organelles
-        const request = { Keys: ["Enzymes", "Generators"] };
-        const result = server.GetTitleData(request);
+        const titleDataRequest = { "Keys": ["Enzymes", "Generators"] };
+        const titleDataResult = server.GetTitleData(titleDataRequest);
 
-        if (result.Data.hasOwnProperty("Generators"))
+        if (titleDataResult.Data.hasOwnProperty("Generators"))
         {
-            this.generators = JSON.parse(result.Data["Generators"]);
+            this.generators = JSON.parse(titleDataResult.Data["Generators"]);
         }
 
-        if (result.Data.hasOwnProperty("Enzymes"))
+        if (titleDataResult.Data.hasOwnProperty("Enzymes"))
         {
-            this.enzymes = JSON.parse(result.Data["Enzymes"]);
+            this.enzymes = JSON.parse(titleDataResult.Data["Enzymes"]);
         }
     }
 }

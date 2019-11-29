@@ -11,18 +11,18 @@ class Controller {
     constructor()
     {
         Controller.registerServices();
-        const titleDataService = <TitleDataService> ServiceLocator.resolve(TitleDataService);
-        titleDataService.Fetch();
     }
 
     CreateCharacter(args: ICreateCharacterController): void
     {
+        Controller.setupTitleData();
         const characterService = <CharacterService> ServiceLocator.resolve(CharacterService);
         characterService.Create(args.CharacterName);
     }
 
     PurchaseOrganelle(args: IPurchaseOrganelleController) : void
     {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const organelleService = <OrganelleService> ServiceLocator.resolve(OrganelleService);
         organelleService.Purchase(args.OrganelleId, args.AtpCost);
@@ -30,6 +30,7 @@ class Controller {
 
     EquipOrganelle(args: IEquipOrganelleController) : void
     {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const organelleService = <OrganelleService> ServiceLocator.resolve(OrganelleService);
         organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString())
@@ -37,6 +38,7 @@ class Controller {
 
     PurchaseEnzyme(args : IPurchaseEnzymeController) : void
     {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const enzymeService = <EnzymeService> ServiceLocator.resolve(EnzymeService);
         enzymeService.Purchase(args.EnzymeId, args.costs, args.OrganelleItemInstanceId);
@@ -44,6 +46,7 @@ class Controller {
 
     EquipEnzyme(args : IEquipEnzymeController) : void
     {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const enzymeService = <EnzymeService> ServiceLocator.resolve(EnzymeService);
         enzymeService.Equip(args.EnzymeItemInstanceId, args.OrganelleItemInstanceId);
@@ -51,6 +54,7 @@ class Controller {
 
     UnEquipEnzyme(args : IUnEquipEnzymeController) : void
     {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const enzymeService = <EnzymeService> ServiceLocator.resolve(EnzymeService);
         enzymeService.UnEquip(args.EnzymeItemInstanceId);
@@ -58,6 +62,7 @@ class Controller {
 
     ClaimGenerator(args : IClaimGeneratorController) : void
     {
+        Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const generatorService = <GeneratorService> ServiceLocator.resolve(GeneratorService);
         generatorService.Claim(args.generatorItemInstanceId);
@@ -68,6 +73,12 @@ class Controller {
         const inventoryService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
         inventoryService.characterId = characterId;
         inventoryService.FetchItems();
+    }
+
+    private static setupTitleData()
+    {
+        const titleDataService = <TitleDataService> ServiceLocator.resolve(TitleDataService);
+        titleDataService.FetchData();
     }
 
     private static registerServices(): void

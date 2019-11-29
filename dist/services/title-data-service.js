@@ -1,13 +1,13 @@
 class TitleDataService {
-    Fetch() {
+    FetchData() {
         // TODO: fetch organelles
-        const request = { Keys: ["Enzymes", "Generators"] };
-        const result = server.GetTitleData(request);
-        if (result.Data.hasOwnProperty("Generators")) {
-            this.generators = JSON.parse(result.Data["Generators"]);
+        const titleDataRequest = { "Keys": ["Enzymes", "Generators"] };
+        const titleDataResult = server.GetTitleData(titleDataRequest);
+        if (titleDataResult.Data.hasOwnProperty("Generators")) {
+            this.generators = JSON.parse(titleDataResult.Data["Generators"]);
         }
-        if (result.Data.hasOwnProperty("Enzymes")) {
-            this.enzymes = JSON.parse(result.Data["Enzymes"]);
+        if (titleDataResult.Data.hasOwnProperty("Enzymes")) {
+            this.enzymes = JSON.parse(titleDataResult.Data["Enzymes"]);
         }
     }
 }

@@ -2,13 +2,15 @@ const path = require('path');
 const fs = require('fs');
 const async = require('async');
 
+//TODO: we should be able to avoid requiring this
 const directories = ["utils", "services"];
 
 const filesToRead = [];
-directories.forEach(addFilesToReadFromDirectory);
-
 let filesContent = "";
-function addFilesToReadFromDirectory(directory)
+
+async.eachSeries(directories, addFilesToReadFromDirectory, onDirectoryFilesAdded);
+
+function addFilesToReadFromDirectory(directory, callback)
 {
     const directoryPath = path.join(__dirname, '../dist/' + directory);
     fs.readdir(directoryPath, function (err, files) {
@@ -20,11 +22,7 @@ function addFilesToReadFromDirectory(directory)
         files.forEach(function (file) {
             filesToRead.push(directoryPath + "\\" + file);
         });
-
-        if (directory === directories[directories.length - 1])
-        {
-            onDirectoryFilesAdded()
-        }
+        callback();
     });
 }
 
@@ -48,12 +46,13 @@ function onDirectoryFilesAdded()
 function onFilesContentAdded()
 {
     const arrayOfLines = filesContent.match(/[^\r\n]+/g);
-
+    const removedLines = [];
     const arrayWithoutModules = [];
     for (const line of arrayOfLines)
     {
         if (line.includes('export') || line.includes('import'))
         {
+            removedLines.push(line);
             continue;
         }
         arrayWithoutModules.push(line);
