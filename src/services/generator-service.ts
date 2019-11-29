@@ -12,7 +12,7 @@ class GeneratorService
         const invService = <CharacterInventoryService> ServiceLocator.resolve(CharacterInventoryService);
 
         const generator = invService.characterItems.find(i => i.ItemInstanceId === generatorItemInstanceId);
-        const generatorTitleData = dataService.generators.find(g => g.Id === generator.ItemId);
+        const generatorTitleData = dataService.generators[generator.ItemId];
 
         const data = generator.CustomData;
         const value = GeneratorService.getGeneratorValue(data["startTime"], data["limit"] ,data["pace"]);
@@ -43,8 +43,8 @@ class GeneratorService
         const dataService = <TitleDataService> ServiceLocator.resolve(TitleDataService);
 
         const enzyme = invService.GetLocalInventoryItem(enzymeItemInstanceId);
-        const enzymeTitleData = dataService.enzymes.find(e => e.Id === enzyme.ItemId);
-        const generatorTitleData = dataService.generators.find(g => g.Id === enzymeTitleData.GeneratorId);
+        const enzymeTitleData = dataService.enzymes[enzyme.ItemId];
+        const generatorTitleData = dataService.generators[enzymeTitleData.GeneratorId];
 
         const generator = invService.GrantItems([enzymeTitleData.Id]);
         const customData = GeneratorService.generateCustomData(generatorTitleData, enzymeItemInstanceId);
