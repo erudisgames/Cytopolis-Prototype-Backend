@@ -7,7 +7,9 @@ class OrganelleService {
         // TODO: verify with titleData & inventory to ensure player can purchase it
         const currencyService = ServiceLocator.resolve(CurrencyService);
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
-        currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
+        if (atpPrice > 0) {
+            currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
+        }
         inventoryService.GrantItems([organelleId]);
     }
     Equip(itemInstanceId, posX, posY) {

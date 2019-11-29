@@ -22,6 +22,9 @@ class ServiceLocator {
 }
 ServiceLocator.initialised = false;
 class CharacterInventoryService {
+    constructor() {
+        this.characterItems = [];
+    }
     FetchItems() {
         let itemsRequest = { CharacterId: this.characterId, PlayFabId: currentPlayerId };
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
@@ -66,7 +69,7 @@ class CharacterInventoryService {
     }
     UpdateItemCustomData(itemInstanceId, data) {
         const stringifyData = {};
-        for (const key in Object.getOwnPropertyNames(data)) {
+        for (const key of Object.getOwnPropertyNames(data)) {
             stringifyData[key] = data[key];
         }
         let customDataUpdateRequest = {
@@ -77,8 +80,10 @@ class CharacterInventoryService {
         };
         server.UpdateUserInventoryItemCustomData(customDataUpdateRequest);
         const updatedItem = this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
-        for (const key in Object.getOwnPropertyNames(data)) {
-            updatedItem.CustomData[key] = data[key];
+        if (updatedItem) {
+            for (const key in Object.getOwnPropertyNames(data)) {
+                updatedItem.CustomData[key] = data[key];
+            }
         }
     }
     GetLocalInventoryItem(itemInstanceId) {
@@ -219,7 +224,9 @@ class OrganelleService {
         // TODO: verify with titleData & inventory to ensure player can purchase it
         const currencyService = ServiceLocator.resolve(CurrencyService);
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
-        currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
+        if (atpPrice > 0) {
+            currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
+        }
         inventoryService.GrantItems([organelleId]);
     }
     Equip(itemInstanceId, posX, posY) {

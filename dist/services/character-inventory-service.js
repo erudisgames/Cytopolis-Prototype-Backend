@@ -1,4 +1,7 @@
 class CharacterInventoryService {
+    constructor() {
+        this.characterItems = [];
+    }
     FetchItems() {
         let itemsRequest = { CharacterId: this.characterId, PlayFabId: currentPlayerId };
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
@@ -43,7 +46,7 @@ class CharacterInventoryService {
     }
     UpdateItemCustomData(itemInstanceId, data) {
         const stringifyData = {};
-        for (const key in Object.getOwnPropertyNames(data)) {
+        for (const key of Object.getOwnPropertyNames(data)) {
             stringifyData[key] = data[key];
         }
         let customDataUpdateRequest = {
@@ -54,8 +57,10 @@ class CharacterInventoryService {
         };
         server.UpdateUserInventoryItemCustomData(customDataUpdateRequest);
         const updatedItem = this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
-        for (const key in Object.getOwnPropertyNames(data)) {
-            updatedItem.CustomData[key] = data[key];
+        if (updatedItem) {
+            for (const key in Object.getOwnPropertyNames(data)) {
+                updatedItem.CustomData[key] = data[key];
+            }
         }
     }
     GetLocalInventoryItem(itemInstanceId) {
