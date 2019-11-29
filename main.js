@@ -1,3 +1,6 @@
+const Constants = {
+    CURRENCY_ATP: "AP"
+};
 class ServiceLocator {
     static init() {
         this.registeredClasses = new Map();
@@ -18,7 +21,6 @@ class ServiceLocator {
     }
 }
 ServiceLocator.initialised = false;
-
 class CharacterInventoryService {
     FetchItems() {
         let itemsRequest = { CharacterId: this.characterId, PlayFabId: currentPlayerId };
@@ -36,6 +38,12 @@ class CharacterInventoryService {
             itemsGrantResult.ItemGrantResults.forEach(i => this.characterItems.push(i));
         }
         return itemsGrantResult;
+    }
+    RevokeItem(item) {
+        const result = server.RevokeInventoryItem(item);
+        const revokedItem = -this.characterItems.findIndex(i => i.ItemInstanceId === item.ItemInstanceId);
+        this.characterItems = this.characterItems.splice(revokedItem, 1);
+        return result;
     }
     ConsumeItems(items) {
         const consumeItemResults = [];
@@ -57,23 +65,30 @@ class CharacterInventoryService {
         return consumeItemResults;
     }
     UpdateItemCustomData(itemInstanceId, data) {
+        const stringifyData = {};
+        for (const key in Object.getOwnPropertyNames(data)) {
+            stringifyData[key] = data[key];
+        }
         let customDataUpdateRequest = {
             CharacterId: this.characterId,
-            Data: data,
+            Data: stringifyData,
             ItemInstanceId: itemInstanceId,
             PlayFabId: currentPlayerId
         };
         server.UpdateUserInventoryItemCustomData(customDataUpdateRequest);
         const updatedItem = this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
-        for (const key in data) {
+        for (const key in Object.getOwnPropertyNames(data)) {
             updatedItem.CustomData[key] = data[key];
         }
     }
     GetLocalInventoryItem(itemInstanceId) {
         return this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
     }
+    FindItemWithCustomData(itemId, key, value) {
+        const itemsOfType = this.characterItems.filter(i => i.ItemId === itemId);
+        return itemsOfType.find(i => i[key] === value);
+    }
 }
-
 class CharacterService {
     Create(characterName) {
         const grantCharRequest = {
@@ -84,7 +99,6 @@ class CharacterService {
         server.GrantCharacterToUser(grantCharRequest);
     }
 }
-
 class CurrencyService {
     Remove(amount, type) {
         const subtractRequest = {
@@ -94,8 +108,15 @@ class CurrencyService {
         };
         return server.SubtractUserVirtualCurrency(subtractRequest);
     }
+    Add(amount, type) {
+        const request = {
+            Amount: amount,
+            PlayFabId: currentPlayerId,
+            VirtualCurrency: type
+        };
+        return server.AddUserVirtualCurrency(request);
+    }
 }
-
 class EnzymeService {
     Purchase(enzymeId, costs, organelleItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
@@ -118,86 +139,106 @@ class EnzymeService {
     }
     UnEquip(enzymeItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
-        invService.UpdateItemCustomData(enzymeItemInstanceId, { organelleItemInstanceId: null });
+        invService.UpdateItemCustomData(enzymeItemInstanceId, { organelleItemInstanceId: "" });
         const genService = ServiceLocator.resolve(GeneratorService);
         genService.Destroy(enzymeItemInstanceId);
     }
 }
-
 class GeneratorService {
     Claim(generatorItemInstanceId) {
+        const dataService = ServiceLocator.resolve(TitleDataService);
+        const invService = ServiceLocator.resolve(CharacterInventoryService);
+        const generator = invService.characterItems.find(i => i.ItemInstanceId === generatorItemInstanceId);
+        const generatorTitleData = dataService.generators.find(g => g.Id === generator.ItemId);
+        const data = generator.CustomData;
+        const value = GeneratorService.getGeneratorValue(data["startTime"], data["limit"], data["pace"]);
+        if (generatorTitleData.ItemId === Constants.CURRENCY_ATP) {
+            const currencyService = ServiceLocator.resolve(CurrencyService);
+            currencyService.Add(value, Constants.CURRENCY_ATP);
+        }
+        else {
+            const itemIds = [];
+            // TODO: there must be a better way to grant multiple items
+            for (let i = 0; i < value; i++) {
+                itemIds.push(generatorTitleData.ItemId);
+            }
+            invService.GrantItems(itemIds);
+        }
+        const customData = { startTime: GeneratorService.nowTimestamp() };
+        invService.UpdateItemCustomData(generatorItemInstanceId, customData);
     }
     Create(enzymeItemInstanceId) {
+        const invService = ServiceLocator.resolve(CharacterInventoryService);
+        const dataService = ServiceLocator.resolve(TitleDataService);
+        const enzyme = invService.GetLocalInventoryItem(enzymeItemInstanceId);
+        const enzymeTitleData = dataService.enzymes.find(e => e.Id === enzyme.ItemId);
+        const generatorTitleData = dataService.generators.find(g => g.Id === enzymeTitleData.GeneratorId);
+        const generator = invService.GrantItems([enzymeTitleData.Id]);
+        const customData = GeneratorService.generateCustomData(generatorTitleData, enzymeItemInstanceId);
+        invService.UpdateItemCustomData(generator.ItemGrantResults[0].ItemInstanceId, customData);
     }
     Destroy(enzymeItemInstanceId) {
+        const invService = ServiceLocator.resolve(CharacterInventoryService);
+        const generator = invService.FindItemWithCustomData("generator", "enzymeItemInstanceId", enzymeItemInstanceId);
+        invService.RevokeItem({
+            CharacterId: invService.characterId,
+            ItemInstanceId: generator.ItemInstanceId,
+            PlayFabId: currentPlayerId
+        });
+    }
+    static generateCustomData(generatorTitleData, enzymeItemInstanceId) {
+        return {
+            startTime: GeneratorService.nowTimestamp(),
+            limit: generatorTitleData.Limit.toString(),
+            pace: generatorTitleData.Pace.toString(),
+            resource: generatorTitleData.ItemId,
+            enzymeItemInstanceId: enzymeItemInstanceId
+        };
+    }
+    static nowTimestamp() {
+        return Math.floor(Date.now() / 1000).toString();
+    }
+    static getGeneratorValue(startTimeS, limitS, paceS) {
+        const startTime = parseInt(startTimeS);
+        const limit = parseInt(limitS);
+        const pace = parseInt(paceS);
+        const stopTime = Math.floor(Date.now() / 1000);
+        const seconds = stopTime - startTime;
+        const value = seconds * pace;
+        if (value < 1) {
+            return 0;
+        }
+        if (value < limit) {
+            return value;
+        }
+        return limit;
     }
 }
-
 class OrganelleService {
     Purchase(organelleId, atpPrice) {
         // TODO: verify with titleData & inventory to ensure player can purchase it
         const currencyService = ServiceLocator.resolve(CurrencyService);
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
-        currencyService.Remove(atpPrice, CURRENCY_ATP);
+        currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
         inventoryService.GrantItems([organelleId]);
     }
     Equip(itemInstanceId, posX, posY) {
         // TODO: do some verifications like ensuring tile is available
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
-        inventoryService.UpdateItemCustomData(itemInstanceId, { posX, posY });
+        const enzymesCreated = "0";
+        inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, posX, posY });
     }
 }
-
-class Controller {
-    constructor() {
-        Controller.registerServices();
-    }
-    CreateCharacter(args) {
-        const characterService = ServiceLocator.resolve(CharacterService);
-        characterService.Create(args.CharacterName);
-    }
-    PurchaseOrganelle(args) {
-        Controller.setupInventory(args.CharacterId);
-        const organelleService = ServiceLocator.resolve(OrganelleService);
-        organelleService.Purchase(args.OrganelleId, args.AtpCost);
-    }
-    EquipOrganelle(args) {
-        Controller.setupInventory(args.CharacterId);
-        const organelleService = ServiceLocator.resolve(OrganelleService);
-        organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString());
-    }
-    PurchaseEnzyme(args) {
-        Controller.setupInventory(args.CharacterId);
-        const enzymeService = ServiceLocator.resolve(EnzymeService);
-        enzymeService.Purchase(args.EnzymeId, args.costs, args.OrganelleItemInstanceId);
-    }
-    EquipEnzyme(args) {
-        Controller.setupInventory(args.CharacterId);
-        const enzymeService = ServiceLocator.resolve(EnzymeService);
-        enzymeService.Equip(args.EnzymeItemInstanceId, args.OrganelleItemInstanceId);
-    }
-    UnEquipEnzyme(args) {
-        Controller.setupInventory(args.CharacterId);
-        const enzymeService = ServiceLocator.resolve(EnzymeService);
-        enzymeService.UnEquip(args.EnzymeItemInstanceId);
-    }
-    static setupInventory(characterId) {
-        const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
-        inventoryService.characterId = characterId;
-        inventoryService.FetchItems();
-    }
-    static registerServices() {
-        ServiceLocator.register(CharacterService, new CharacterService());
-        ServiceLocator.register(CurrencyService, new CurrencyService());
-        ServiceLocator.register(CharacterInventoryService, new CharacterInventoryService());
-        ServiceLocator.register(OrganelleService, new OrganelleService());
+class TitleDataService {
+    Fetch() {
+        // TODO: fetch organelles
+        const request = { Keys: ["Enzymes", "Generators"] };
+        const result = server.GetTitleData(request);
+        if (result.Data.hasOwnProperty("Generators")) {
+            this.generators = JSON.parse(result.Data["Generators"]);
+        }
+        if (result.Data.hasOwnProperty("Enzymes")) {
+            this.enzymes = JSON.parse(result.Data["Enzymes"]);
+        }
     }
 }
-
-const controller = new Controller();
-handlers["CreateCharacter"] = controller.CreateCharacter;
-handlers["PurchaseOrganelle"] = controller.PurchaseOrganelle;
-handlers["EquipOrganelle"] = controller.EquipOrganelle;
-handlers["PurchaseEnzyme"] = controller.PurchaseEnzyme;
-handlers["EquipEnzyme"] = controller.EquipEnzyme;
-handlers["UnEquipEnzyme"] = controller.UnEquipEnzyme;

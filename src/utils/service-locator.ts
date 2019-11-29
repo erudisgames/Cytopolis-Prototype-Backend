@@ -4,6 +4,7 @@ import CurrencyService from "../services/currency-service";
 import OrganelleService from "../services/organelle-service";
 import GeneratorService from "../services/generator-service";
 import EnzymeService from "../services/enzyme-service";
+import TitleDataService from "../services/title-data-service";
 
 export type IRegisteredClassesGeneric =
     CharacterService |
@@ -12,6 +13,7 @@ export type IRegisteredClassesGeneric =
     OrganelleService |
     EnzymeService |
     GeneratorService |
+    TitleDataService |
     undefined;
 
 class ServiceLocator {

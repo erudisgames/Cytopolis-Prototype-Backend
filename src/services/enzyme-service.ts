@@ -33,7 +33,7 @@ class EnzymeService
     UnEquip(enzymeItemInstanceId : string) : void
     {
         const invService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
-        invService.UpdateItemCustomData(enzymeItemInstanceId, {organelleItemInstanceId: null});
+        invService.UpdateItemCustomData(enzymeItemInstanceId, {organelleItemInstanceId: ""});
 
         const genService = <GeneratorService>ServiceLocator.resolve(GeneratorService);
         genService.Destroy(enzymeItemInstanceId);

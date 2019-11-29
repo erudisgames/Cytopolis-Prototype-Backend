@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "cloud functions for biology poc",
   "scripts": {
-    "test": "jest --config jestconfig.json"
+    "test": "jest --config jestconfig.json",
+    "build-main": "node_modules/.bin/tsc -p tsconfig.json && node ./utils/build-main.js"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,7 @@
   "homepage": "https://github.com/erudisgames/Biology-POC#readme",
   "devDependencies": {
     "@types/jest": "^24.0.23",
+    "async": "^3.1.0",
     "jest": "^24.9.0",
     "ts-jest": "^24.2.0",
     "typescript": "^3.7.2"

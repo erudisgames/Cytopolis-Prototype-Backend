@@ -6,72 +6,52 @@ import OrganelleService from "./services/organelle-service";
 import EnzymeService from "./services/enzyme-service";
 import TitleDataService from "./services/title-data-service";
 import GeneratorService from "./services/generator-service";
-
 class Controller {
-    constructor()
-    {
+    constructor() {
         Controller.registerServices();
-        const titleDataService = <TitleDataService> ServiceLocator.resolve(TitleDataService);
+        const titleDataService = ServiceLocator.resolve(TitleDataService);
         titleDataService.Fetch();
     }
-
-    CreateCharacter(args: ICreateCharacterController): void
-    {
-        const characterService = <CharacterService> ServiceLocator.resolve(CharacterService);
+    CreateCharacter(args) {
+        const characterService = ServiceLocator.resolve(CharacterService);
         characterService.Create(args.CharacterName);
     }
-
-    PurchaseOrganelle(args: IPurchaseOrganelleController) : void
-    {
+    PurchaseOrganelle(args) {
         Controller.setupInventory(args.CharacterId);
-        const organelleService = <OrganelleService> ServiceLocator.resolve(OrganelleService);
+        const organelleService = ServiceLocator.resolve(OrganelleService);
         organelleService.Purchase(args.OrganelleId, args.AtpCost);
     }
-
-    EquipOrganelle(args: IEquipOrganelleController) : void
-    {
+    EquipOrganelle(args) {
         Controller.setupInventory(args.CharacterId);
-        const organelleService = <OrganelleService> ServiceLocator.resolve(OrganelleService);
-        organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString())
+        const organelleService = ServiceLocator.resolve(OrganelleService);
+        organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString());
     }
-
-    PurchaseEnzyme(args : IPurchaseEnzymeController) : void
-    {
+    PurchaseEnzyme(args) {
         Controller.setupInventory(args.CharacterId);
-        const enzymeService = <EnzymeService> ServiceLocator.resolve(EnzymeService);
+        const enzymeService = ServiceLocator.resolve(EnzymeService);
         enzymeService.Purchase(args.EnzymeId, args.costs, args.OrganelleItemInstanceId);
     }
-
-    EquipEnzyme(args : IEquipEnzymeController) : void
-    {
+    EquipEnzyme(args) {
         Controller.setupInventory(args.CharacterId);
-        const enzymeService = <EnzymeService> ServiceLocator.resolve(EnzymeService);
+        const enzymeService = ServiceLocator.resolve(EnzymeService);
         enzymeService.Equip(args.EnzymeItemInstanceId, args.OrganelleItemInstanceId);
     }
-
-    UnEquipEnzyme(args : IUnEquipEnzymeController) : void
-    {
+    UnEquipEnzyme(args) {
         Controller.setupInventory(args.CharacterId);
-        const enzymeService = <EnzymeService> ServiceLocator.resolve(EnzymeService);
+        const enzymeService = ServiceLocator.resolve(EnzymeService);
         enzymeService.UnEquip(args.EnzymeItemInstanceId);
     }
-
-    ClaimGenerator(args : IClaimGeneratorController) : void
-    {
+    ClaimGenerator(args) {
         Controller.setupInventory(args.CharacterId);
-        const generatorService = <GeneratorService> ServiceLocator.resolve(GeneratorService);
+        const generatorService = ServiceLocator.resolve(GeneratorService);
         generatorService.Claim(args.generatorItemInstanceId);
     }
-
-    private static setupInventory(characterId: string)
-    {
-        const inventoryService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
+    static setupInventory(characterId) {
+        const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
         inventoryService.characterId = characterId;
         inventoryService.FetchItems();
     }
-
-    private static registerServices(): void
-    {
+    static registerServices() {
         ServiceLocator.register(TitleDataService, new TitleDataService());
         ServiceLocator.register(CharacterService, new CharacterService());
         ServiceLocator.register(CurrencyService, new CurrencyService());
@@ -79,10 +59,8 @@ class Controller {
         ServiceLocator.register(OrganelleService, new OrganelleService());
         ServiceLocator.register(EnzymeService, new EnzymeService());
         ServiceLocator.register(GeneratorService, new GeneratorService());
-
     }
 }
-
 const controller = new Controller();
 handlers["CreateCharacter"] = controller.CreateCharacter;
 handlers["PurchaseOrganelle"] = controller.PurchaseOrganelle;

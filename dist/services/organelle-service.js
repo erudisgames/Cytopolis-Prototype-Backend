@@ -2,26 +2,19 @@ import CharacterInventoryService from "./character-inventory-service";
 import ServiceLocator from "../utils/service-locator";
 import CurrencyService from "./currency-service";
 import Constants from "../utils/constants";
-
-class OrganelleService
-{
-    Purchase(organelleId : string, atpPrice : number) : void
-    {
+class OrganelleService {
+    Purchase(organelleId, atpPrice) {
         // TODO: verify with titleData & inventory to ensure player can purchase it
-        const currencyService = <CurrencyService>ServiceLocator.resolve(CurrencyService);
-        const inventoryService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
-
+        const currencyService = ServiceLocator.resolve(CurrencyService);
+        const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
         currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
         inventoryService.GrantItems([organelleId]);
     }
-
-    Equip(itemInstanceId : string, posX : string, posY : string) : void
-    {
+    Equip(itemInstanceId, posX, posY) {
         // TODO: do some verifications like ensuring tile is available
-        const inventoryService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
+        const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
         const enzymesCreated = "0";
         inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, posX, posY });
     }
 }
-
 export default OrganelleService;

@@ -5,6 +5,8 @@ import GrantItemsToCharacterRequest = PlayFabServerModels.GrantItemsToCharacterR
 import UpdateUserInventoryItemDataRequest = PlayFabServerModels.UpdateUserInventoryItemDataRequest;
 import ConsumeItemRequest = PlayFabServerModels.ConsumeItemRequest;
 import ConsumeItemResult = PlayFabServerModels.ConsumeItemResult;
+import RevokeInventoryItem = PlayFabServerModels.RevokeInventoryItem;
+import RevokeInventoryResult = PlayFabServerModels.RevokeInventoryResult;
 
 class CharacterInventoryService {
     // TODO: currently we assume that the handler is only used to fetch one character items
@@ -35,6 +37,16 @@ class CharacterInventoryService {
         return itemsGrantResult;
     }
 
+    RevokeItem(item : RevokeInventoryItem) : RevokeInventoryResult
+    {
+        const result = server.RevokeInventoryItem(item);
+
+        const revokedItem =- this.characterItems.findIndex(i => i.ItemInstanceId === item.ItemInstanceId);
+        this.characterItems = this.characterItems.splice(revokedItem, 1);
+
+        return result;
+    }
+
     ConsumeItems(items: {[key: string]: number}) : ConsumeItemResult[]
     {
         const consumeItemResults : ConsumeItemResult[] = [];
@@ -61,18 +73,24 @@ class CharacterInventoryService {
         return consumeItemResults;
     }
 
-    UpdateItemCustomData(itemInstanceId : string, data : { [key: string]: string }) : void
+    UpdateItemCustomData(itemInstanceId : string, data : CustomDataInterface) : void
     {
+        const stringifyData : { [key: string]: string | null } = {};
+        for (const key in Object.getOwnPropertyNames(data))
+        {
+            stringifyData[key] = data[key];
+        }
+
         let customDataUpdateRequest : UpdateUserInventoryItemDataRequest = {
             CharacterId: this.characterId,
-            Data: data,
+            Data: stringifyData,
             ItemInstanceId: itemInstanceId,
             PlayFabId: currentPlayerId
         };
         server.UpdateUserInventoryItemCustomData(customDataUpdateRequest);
 
         const updatedItem = this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
-        for (const key in data)
+        for (const key in Object.getOwnPropertyNames(data))
         {
             updatedItem.CustomData[key] = data[key];
         }
@@ -81,6 +99,12 @@ class CharacterInventoryService {
     GetLocalInventoryItem(itemInstanceId: string) : ItemInstance
     {
         return this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
+    }
+
+    FindItemWithCustomData(itemId : string, key : string, value : string) : ItemInstance
+    {
+        const itemsOfType = this.characterItems.filter(i => i.ItemId === itemId);
+        return itemsOfType.find(i => i[key] === value);
     }
 }
 

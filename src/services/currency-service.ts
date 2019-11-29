@@ -1,5 +1,6 @@
 import ModifyUserVirtualCurrencyResult = PlayFabServerModels.ModifyUserVirtualCurrencyResult;
 import SubtractUserVirtualCurrencyRequest = PlayFabServerModels.SubtractUserVirtualCurrencyRequest;
+import AddUserVirtualCurrencyRequest = PlayFabServerModels.AddUserVirtualCurrencyRequest;
 
 class CurrencyService {
 
@@ -11,6 +12,15 @@ class CurrencyService {
             VirtualCurrency: type
         };
         return server.SubtractUserVirtualCurrency(subtractRequest);
+    }
+
+    Add(amount : number, type : string) : ModifyUserVirtualCurrencyResult
+    {
+        const request : AddUserVirtualCurrencyRequest = {
+            Amount: amount,
+            PlayFabId: currentPlayerId,
+            VirtualCurrency: type};
+        return server.AddUserVirtualCurrency(request);
     }
 }
 
