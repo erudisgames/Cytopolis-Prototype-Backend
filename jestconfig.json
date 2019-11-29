@@ -11,6 +11,7 @@
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
   "globals": {
-    "currentPlayerId": 666
+    "currentPlayerId": 666,
+    "server": {}
   }
 }

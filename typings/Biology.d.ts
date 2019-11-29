@@ -3,7 +3,6 @@ interface ICreateCharacterController
     CharacterName : string;
 }
 
-// OrganelleService
 interface IPurchaseOrganelleController
 {
     CharacterId : string,
@@ -19,7 +18,6 @@ interface IEquipOrganelleController
     PosY : number
 }
 
-// EnzymeService
 interface IPurchaseEnzymeController
 {
     CharacterId : string,
@@ -46,7 +44,7 @@ interface IClaimGeneratorController
     generatorItemInstanceId : string
 }
 
-// CustomData interfaces
+// Custom Data
 
 interface OrganelleCustomData
 {
@@ -69,7 +67,7 @@ interface GeneratorCustomData
     enzymeItemInstanceId?: string
 }
 
-// TitleData
+// Title Data
 interface EnzymeTitleData
 {
     Id: string,

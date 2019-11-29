@@ -11,7 +11,10 @@ class OrganelleService
         const currencyService = <CurrencyService>ServiceLocator.resolve(CurrencyService);
         const inventoryService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
 
-        currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
+        if (atpPrice > 0)
+        {
+            currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
+        }
         inventoryService.GrantItems([organelleId]);
     }
 

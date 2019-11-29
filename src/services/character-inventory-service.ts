@@ -11,7 +11,7 @@ import RevokeInventoryResult = PlayFabServerModels.RevokeInventoryResult;
 class CharacterInventoryService {
     // TODO: currently we assume that the handler is only used to fetch one character items
     public characterId : string;
-    public characterItems : ItemInstance[] | undefined;
+    public characterItems : ItemInstance[] = [];
 
     FetchItems() : void
     {
@@ -76,7 +76,7 @@ class CharacterInventoryService {
     UpdateItemCustomData(itemInstanceId : string, data : CustomDataInterface) : void
     {
         const stringifyData : { [key: string]: string | null } = {};
-        for (const key in Object.getOwnPropertyNames(data))
+        for (const key of Object.getOwnPropertyNames(data))
         {
             stringifyData[key] = data[key];
         }
@@ -90,9 +90,12 @@ class CharacterInventoryService {
         server.UpdateUserInventoryItemCustomData(customDataUpdateRequest);
 
         const updatedItem = this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
-        for (const key in Object.getOwnPropertyNames(data))
+        if (updatedItem)
         {
-            updatedItem.CustomData[key] = data[key];
+            for (const key in Object.getOwnPropertyNames(data))
+            {
+                updatedItem.CustomData[key] = data[key];
+            }
         }
     }
 
