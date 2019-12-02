@@ -1,7 +1,7 @@
 {
-  "name": "biology-poc",
+  "name": "playfab-cloud-typescript-bootstrap",
   "version": "1.0.0",
-  "description": "cloud functions for biology poc",
+  "description": "Small bootstrap to code cloud script using typescript, modules and tests",
   "scripts": {
     "test": "jest --config jestconfig.json",
     "build-main": "node_modules/.bin/tsc -p tsconfig.json && node ./utils/build-main.js && rm -rf dist"
@@ -13,9 +13,9 @@
   "author": "Johan de Bruin",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/erudisgames/Biology-POC/issues"
+    "url": "https://github.com/erudisgames/Playfab-Cloud-TypeScript-Bootstrap/issues"
   },
-  "homepage": "https://github.com/erudisgames/Biology-POC#readme",
+  "homepage": "https://github.com/erudisgames/Playfab-Cloud-TypeScript-Bootstrap#readme",
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "async": "^3.1.0",
