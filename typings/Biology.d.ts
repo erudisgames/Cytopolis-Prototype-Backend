@@ -57,7 +57,7 @@ interface OrganelleCustomData
 
 interface EnzymeCustomData
 {
-    organelleItemInstanceId: string
+    orgItemInstanceId: string
 }
 
 interface GeneratorCustomData

@@ -152,7 +152,7 @@ class EnzymeService {
         // create the enzyme and update custom data
         const enzyme = invService.GrantItems([enzymeId]);
         const enzymeInstanceId = enzyme.ItemGrantResults[0].ItemInstanceId;
-        invService.UpdateItemCustomData(enzymeInstanceId, { organelleItemInstanceId });
+        invService.UpdateItemCustomData(enzymeInstanceId, { orgItemInstanceId: organelleItemInstanceId });
         // update custom data from organelle
         const organelle = invService.GetLocalInventoryItem(organelleItemInstanceId);
         const enzymeCreatedString = organelle.CustomData["enzymesCreated"] || "0";
@@ -161,13 +161,13 @@ class EnzymeService {
     }
     Equip(enzymeItemInstanceId, organelleItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
-        invService.UpdateItemCustomData(enzymeItemInstanceId, { organelleItemInstanceId });
+        invService.UpdateItemCustomData(enzymeItemInstanceId, { orgItemInstanceId: organelleItemInstanceId });
         const genService = ServiceLocator.resolve(GeneratorService);
         genService.Create(enzymeItemInstanceId);
     }
     UnEquip(enzymeItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
-        invService.UpdateItemCustomData(enzymeItemInstanceId, { organelleItemInstanceId: "" });
+        invService.UpdateItemCustomData(enzymeItemInstanceId, { orgItemInstanceId: "" });
         const genService = ServiceLocator.resolve(GeneratorService);
         genService.Destroy(enzymeItemInstanceId);
     }
