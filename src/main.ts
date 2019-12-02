@@ -65,7 +65,7 @@ class Controller {
         Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const generatorService = <GeneratorService> ServiceLocator.resolve(GeneratorService);
-        generatorService.Claim(args.generatorItemInstanceId);
+        generatorService.Claim(args.GeneratorItemInstanceId);
     }
 
     private static setupInventory(characterId: string)

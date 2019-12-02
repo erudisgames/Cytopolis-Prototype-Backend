@@ -6,12 +6,12 @@ import CurrencyService from "../services/currency-service";
 
 class GeneratorService
 {
-    Claim(generatorItemInstanceId : string) : void
+    Claim(GeneratorItemInstanceId : string) : void
     {
         const dataService = <TitleDataService> ServiceLocator.resolve(TitleDataService);
         const invService = <CharacterInventoryService> ServiceLocator.resolve(CharacterInventoryService);
 
-        const generator = invService.characterItems.find(i => i.ItemInstanceId === generatorItemInstanceId);
+        const generator = invService.characterItems.find(i => i.ItemInstanceId === GeneratorItemInstanceId);
         const generatorTitleData = dataService.generators[generator.ItemId];
 
         const data = generator.CustomData;
@@ -34,7 +34,7 @@ class GeneratorService
         }
 
         const customData = { startTime: GeneratorService.nowTimestamp() };
-        invService.UpdateItemCustomData(generatorItemInstanceId, customData);
+        invService.UpdateItemCustomData(GeneratorItemInstanceId, customData);
     }
 
     Create(enzymeItemInstanceId : string) : void

@@ -43,7 +43,7 @@ interface IUnEquipEnzymeController
 interface IClaimGeneratorController
 {
     CharacterId : string,
-    generatorItemInstanceId : string
+    GeneratorItemInstanceId : string
 }
 
 // Custom Data
