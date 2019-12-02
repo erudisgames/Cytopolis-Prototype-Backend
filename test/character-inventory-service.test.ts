@@ -19,3 +19,10 @@ test('CharacterInventoryService should call servers UpdateUserInventoryItemCusto
     // @ts-ignore
     delete server.UpdateUserInventoryItemCustomData;
 });
+
+test('CharacterInventoryService should return a correct item when calling FindItemWithCustomData', () => {
+    const characterInventoryService = new CharacterInventoryService();
+    characterInventoryService.characterItems = [{ItemInstanceId: '777', UnitPrice: 0, ItemId: 'generator', CustomData: {DataId: '666'}}];
+    const item = characterInventoryService.FindItemWithCustomData('generator', 'DataId', '666');
+    expect(item.ItemInstanceId).toBe('777');
+});
