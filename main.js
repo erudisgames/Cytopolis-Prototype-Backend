@@ -74,8 +74,8 @@ class CharacterInventoryService {
         const stringifyData = {};
         for (const key of Object.getOwnPropertyNames(data)) {
             // TODO: this is a cheap solution for playfab 20 bytes limits in free tier
-            const value = key.includes("InstanceId") ? data[key].slice(0, 20) : data[key];
-            stringifyData[key] = value;
+            //const value: string = key.includes("InstanceId") ? data[key].slice(0,20) : data[key];
+            stringifyData[key] = data[key];
         }
         let customDataUpdateRequest = {
             CharacterId: this.characterId,
@@ -86,6 +86,9 @@ class CharacterInventoryService {
         server.UpdateUserInventoryItemCustomData(customDataUpdateRequest);
         const updatedItem = this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
         if (updatedItem) {
+            if (updatedItem.CustomData === undefined) {
+                updatedItem.CustomData = {};
+            }
             for (const key of Object.getOwnPropertyNames(data)) {
                 updatedItem.CustomData[key] = data[key];
             }
