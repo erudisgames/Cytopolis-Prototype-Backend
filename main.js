@@ -97,8 +97,8 @@ class CharacterInventoryService {
     GetLocalInventoryItem(itemInstanceId) {
         return this.characterItems.find(i => i.ItemInstanceId === itemInstanceId);
     }
-    FindItemWithCustomData(itemId, key, value) {
-        const itemsOfType = this.characterItems.filter(i => i.ItemId === itemId);
+    FindItemWithCustomData(itemClass, key, value) {
+        const itemsOfType = this.characterItems.filter(i => i.ItemClass === itemClass);
         return itemsOfType.find(i => i.CustomData !== undefined && i.CustomData[key] === value);
     }
 }
