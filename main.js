@@ -176,10 +176,10 @@ class EnzymeService {
     }
 }
 class GeneratorService {
-    Claim(generatorItemInstanceId) {
+    Claim(GeneratorItemInstanceId) {
         const dataService = ServiceLocator.resolve(TitleDataService);
         const invService = ServiceLocator.resolve(CharacterInventoryService);
-        const generator = invService.characterItems.find(i => i.ItemInstanceId === generatorItemInstanceId);
+        const generator = invService.characterItems.find(i => i.ItemInstanceId === GeneratorItemInstanceId);
         const generatorTitleData = dataService.generators[generator.ItemId];
         const data = generator.CustomData;
         const value = GeneratorService.getGeneratorValue(data["startTime"], data["limit"], data["pace"]);
@@ -196,7 +196,7 @@ class GeneratorService {
             invService.GrantItems(itemIds);
         }
         const customData = { startTime: GeneratorService.nowTimestamp() };
-        invService.UpdateItemCustomData(generatorItemInstanceId, customData);
+        invService.UpdateItemCustomData(GeneratorItemInstanceId, customData);
     }
     Create(enzymeItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
@@ -305,7 +305,7 @@ class Controller {
         Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const generatorService = ServiceLocator.resolve(GeneratorService);
-        generatorService.Claim(args.generatorItemInstanceId);
+        generatorService.Claim(args.GeneratorItemInstanceId);
     }
     static setupInventory(characterId) {
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
