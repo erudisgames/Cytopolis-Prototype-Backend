@@ -3,7 +3,7 @@ const fs = require('fs');
 const async = require('async');
 
 //TODO: we should be able to avoid requiring this
-const directories = ["utils", "services"];
+const directories = ["utils", "services", "biology"];
 
 const filesToRead = [];
 let filesContent = "";

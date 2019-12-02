@@ -1,6 +1,6 @@
-import CharacterInventoryService from "./character-inventory-service";
+import CharacterInventoryService from "../services/character-inventory-service";
 import ServiceLocator from "../utils/service-locator";
-import CurrencyService from "./currency-service";
+import CurrencyService from "../services/currency-service";
 import Constants from "../utils/constants";
 
 class OrganelleService

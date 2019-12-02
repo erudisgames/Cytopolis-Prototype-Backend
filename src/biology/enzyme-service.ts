@@ -1,5 +1,5 @@
 import ServiceLocator from "../utils/service-locator";
-import CharacterInventoryService from "./character-inventory-service";
+import CharacterInventoryService from "../services/character-inventory-service";
 import GeneratorService from "./generator-service";
 
 class EnzymeService

@@ -1,9 +1,9 @@
 import CharacterService from "../services/character-service";
 import CharacterInventoryService from "../services/character-inventory-service";
 import CurrencyService from "../services/currency-service";
-import OrganelleService from "../services/organelle-service";
-import GeneratorService from "../services/generator-service";
-import EnzymeService from "../services/enzyme-service";
+import OrganelleService from "../biology/organelle-service";
+import GeneratorService from "../biology/generator-service";
+import EnzymeService from "../biology/enzyme-service";
 import TitleDataService from "../services/title-data-service";
 
 export type IRegisteredClassesGeneric =

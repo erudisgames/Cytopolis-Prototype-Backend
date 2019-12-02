@@ -73,7 +73,9 @@ class CharacterInventoryService {
     UpdateItemCustomData(itemInstanceId, data) {
         const stringifyData = {};
         for (const key of Object.getOwnPropertyNames(data)) {
-            stringifyData[key] = data[key];
+            // TODO: this is a cheap solution for playfab 20 bytes limits in free tier
+            const value = key.includes("InstanceId") ? data[key].slice(0, 20) : data[key];
+            stringifyData[key] = value;
         }
         let customDataUpdateRequest = {
             CharacterId: this.characterId,
@@ -123,6 +125,24 @@ class CurrencyService {
             VirtualCurrency: type
         };
         return server.AddUserVirtualCurrency(request);
+    }
+}
+class TitleDataService {
+    constructor() {
+        this.enzymes = {};
+        this.generators = {};
+    }
+    FetchData() {
+        // TODO: fetch organelles
+        const titleDataRequest = { "Keys": ["Enzymes", "Generators"] };
+        const titleDataResult = server.GetTitleData(titleDataRequest);
+        // TODO: abstract mechanisim
+        if (titleDataResult.Data.hasOwnProperty("Enzymes")) {
+            this.enzymes = JSON.parse(titleDataResult.Data["Enzymes"]);
+        }
+        if (titleDataResult.Data.hasOwnProperty("Generators")) {
+            this.generators = JSON.parse(titleDataResult.Data["Generators"]);
+        }
     }
 }
 class EnzymeService {
@@ -237,24 +257,6 @@ class OrganelleService {
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
         const enzymesCreated = "0";
         inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, posX, posY });
-    }
-}
-class TitleDataService {
-    constructor() {
-        this.enzymes = {};
-        this.generators = {};
-    }
-    FetchData() {
-        // TODO: fetch organelles
-        const titleDataRequest = { "Keys": ["Enzymes", "Generators"] };
-        const titleDataResult = server.GetTitleData(titleDataRequest);
-        // TODO: abstract mechanisim
-        if (titleDataResult.Data.hasOwnProperty("Enzymes")) {
-            this.enzymes = JSON.parse(titleDataResult.Data["Enzymes"]);
-        }
-        if (titleDataResult.Data.hasOwnProperty("Generators")) {
-            this.generators = JSON.parse(titleDataResult.Data["Generators"]);
-        }
     }
 }
 class Controller {

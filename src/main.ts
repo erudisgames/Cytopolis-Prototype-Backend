@@ -2,10 +2,10 @@ import CharacterService from "./services/character-service";
 import ServiceLocator from "./utils/service-locator";
 import CurrencyService from "./services/currency-service";
 import CharacterInventoryService from "./services/character-inventory-service";
-import OrganelleService from "./services/organelle-service";
-import EnzymeService from "./services/enzyme-service";
+import OrganelleService from "./biology/organelle-service";
+import EnzymeService from "./biology/enzyme-service";
 import TitleDataService from "./services/title-data-service";
-import GeneratorService from "./services/generator-service";
+import GeneratorService from "./biology/generator-service";
 
 class Controller {
     constructor()

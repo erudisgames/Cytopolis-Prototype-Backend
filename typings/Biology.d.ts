@@ -10,6 +10,8 @@ interface IPurchaseOrganelleController
     AtpCost : number
 }
 
+// TODO: change instanceId for instanceIdCropped
+
 interface IEquipOrganelleController
 {
     CharacterId : string,
