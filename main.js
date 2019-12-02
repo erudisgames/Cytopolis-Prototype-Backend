@@ -204,7 +204,7 @@ class GeneratorService {
         const enzyme = invService.GetLocalInventoryItem(enzymeItemInstanceId);
         const enzymeTitleData = dataService.enzymes[enzyme.ItemId];
         const generatorTitleData = dataService.generators[enzymeTitleData.GeneratorId];
-        const generator = invService.GrantItems([enzymeTitleData.Id]);
+        const generator = invService.GrantItems([generatorTitleData.Id]);
         const customData = GeneratorService.generateCustomData(generatorTitleData, enzymeItemInstanceId);
         invService.UpdateItemCustomData(generator.ItemGrantResults[0].ItemInstanceId, customData);
     }
