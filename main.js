@@ -99,7 +99,7 @@ class CharacterInventoryService {
     }
     FindItemWithCustomData(itemId, key, value) {
         const itemsOfType = this.characterItems.filter(i => i.ItemId === itemId);
-        return itemsOfType.find(i => i[key] === value);
+        return itemsOfType.find(i => i.CustomData !== undefined && i.CustomData[key] === value);
     }
 }
 class CharacterService {
