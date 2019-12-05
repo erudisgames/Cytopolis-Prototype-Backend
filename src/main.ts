@@ -41,7 +41,7 @@ class Controller {
         Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const enzymeService = <EnzymeService> ServiceLocator.resolve(EnzymeService);
-        enzymeService.Purchase(args.EnzymeId, args.costs, args.OrganelleItemInstanceId);
+        enzymeService.Purchase(args.EnzymeId, args.Costs, args.OrganelleItemInstanceId);
     }
 
     EquipEnzyme(args : IEquipEnzymeController) : void

@@ -20,12 +20,18 @@ interface IEquipOrganelleController
     PosY : number
 }
 
+interface PurchaseCost
+{
+    ItemId: string,
+    Amount: number
+}
+
 interface IPurchaseEnzymeController
 {
     CharacterId : string,
     EnzymeId : string,
     OrganelleItemInstanceId : string,
-    costs : {[key : string] : number}
+    Costs : PurchaseCost[]
 }
 
 interface IEquipEnzymeController {

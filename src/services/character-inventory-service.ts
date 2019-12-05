@@ -47,13 +47,13 @@ class CharacterInventoryService {
         return result;
     }
 
-    ConsumeItems(items: {[key: string]: number}) : ConsumeItemResult[]
+    ConsumeItems(items: PurchaseCost[]) : ConsumeItemResult[]
     {
         const consumeItemResults : ConsumeItemResult[] = [];
-        for (const key of Object.getOwnPropertyNames(items))
+        for (const purchaseCost of items)
         {
-            const itemInstanceId = key;
-            const amount = items[key];
+            const itemInstanceId = purchaseCost.ItemId;
+            const amount = purchaseCost.Amount;
 
             const consumeRequest : ConsumeItemRequest = {
                 CharacterId: this.characterId,

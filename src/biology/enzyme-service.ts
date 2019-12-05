@@ -4,7 +4,7 @@ import GeneratorService from "./generator-service";
 
 class EnzymeService
 {
-    Purchase(enzymeId : string, costs : {[key : string] : number}, organelleItemInstanceId : string) : void
+    Purchase(enzymeId : string, costs : PurchaseCost[], organelleItemInstanceId : string) : void
     {
         const invService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
         invService.ConsumeItems(costs);

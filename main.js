@@ -50,9 +50,9 @@ class CharacterInventoryService {
     }
     ConsumeItems(items) {
         const consumeItemResults = [];
-        for (const key of Object.getOwnPropertyNames(items)) {
-            const itemInstanceId = key;
-            const amount = items[key];
+        for (const purchaseCost of items) {
+            const itemInstanceId = purchaseCost.ItemId;
+            const amount = purchaseCost.Amount;
             const consumeRequest = {
                 CharacterId: this.characterId,
                 ConsumeCount: amount,
@@ -287,7 +287,7 @@ class Controller {
         Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
         const enzymeService = ServiceLocator.resolve(EnzymeService);
-        enzymeService.Purchase(args.EnzymeId, args.costs, args.OrganelleItemInstanceId);
+        enzymeService.Purchase(args.EnzymeId, args.Costs, args.OrganelleItemInstanceId);
     }
     EquipEnzyme(args) {
         Controller.setupTitleData();
