@@ -152,14 +152,14 @@ class EnzymeService {
     Purchase(enzymeId, costs, organelleItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
         invService.ConsumeItems(costs);
-        // create the enzyme and update custom data
-        const enzyme = invService.GrantItems([enzymeId]);
-        const enzymeInstanceId = enzyme.ItemGrantResults[0].ItemInstanceId;
-        invService.UpdateItemCustomData(enzymeInstanceId, { orgItemInstanceId: organelleItemInstanceId });
+        invService.GrantItems([enzymeId]);
+        //const enzymeInstanceId = enzyme.ItemGrantResults[0].ItemInstanceId;
+        //invService.UpdateItemCustomData(enzymeInstanceId, {orgItemInstanceId: organelleItemInstanceId});
         // update custom data from organelle
         const organelle = invService.GetLocalInventoryItem(organelleItemInstanceId);
         const enzymeCreatedString = organelle.CustomData["enzymesCreated"] || "0";
         const enzymesCreated = parseInt(enzymeCreatedString) + 1;
+        log.info(enzymesCreated.toString());
         invService.UpdateItemCustomData(organelleItemInstanceId, { enzymesCreated: enzymesCreated.toString() });
     }
     Equip(enzymeItemInstanceId, organelleItemInstanceId) {
