@@ -17,12 +17,10 @@ class GeneratorService
         const data = generator.CustomData;
         const value = GeneratorService.getGeneratorValue(data["startTime"], data["limit"] ,data["pace"]);
 
-        log.info("generatorTitleData: ", generatorTitleData);
 
         if (generatorTitleData.ItemId === Constants.CURRENCY_ATP)
         {
             const currencyService = <CurrencyService> ServiceLocator.resolve(CurrencyService);
-            log.info("value: ", value);
             currencyService.Add(value, Constants.CURRENCY_ATP);
         }
         else

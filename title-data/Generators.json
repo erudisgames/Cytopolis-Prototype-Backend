@@ -3,7 +3,7 @@
     "Id": "atp_generator",
     "Pace": 1,
     "Limit": 5,
-    "ItemId": "ap"
+    "ItemId": "AP"
   },
   "carbon_generator": {
     "Id": "carbon_generator",

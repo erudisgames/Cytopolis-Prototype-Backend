@@ -20,7 +20,6 @@ class CurrencyService {
             Amount: amount,
             PlayFabId: currentPlayerId,
             VirtualCurrency: type};
-        log.info("request: ", request);
         return server.AddUserVirtualCurrency(request);
     }
 }
