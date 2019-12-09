@@ -184,6 +184,7 @@ class GeneratorService {
         const generatorTitleData = dataService.generators[generator.ItemId];
         const data = generator.CustomData;
         const value = GeneratorService.getGeneratorValue(data["startTime"], data["limit"], data["pace"]);
+        log.info("generatorTitleData: ", generatorTitleData);
         if (generatorTitleData.ItemId === Constants.CURRENCY_ATP) {
             const currencyService = ServiceLocator.resolve(CurrencyService);
             log.info("value: ", value);
