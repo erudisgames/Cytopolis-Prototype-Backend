@@ -127,6 +127,7 @@ class CurrencyService {
             PlayFabId: currentPlayerId,
             VirtualCurrency: type
         };
+        log.info("request: ", request);
         return server.AddUserVirtualCurrency(request);
     }
 }
@@ -185,6 +186,7 @@ class GeneratorService {
         const value = GeneratorService.getGeneratorValue(data["startTime"], data["limit"], data["pace"]);
         if (generatorTitleData.ItemId === Constants.CURRENCY_ATP) {
             const currencyService = ServiceLocator.resolve(CurrencyService);
+            log.info("value: ", value);
             currencyService.Add(value, Constants.CURRENCY_ATP);
         }
         else {
