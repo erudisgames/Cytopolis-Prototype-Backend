@@ -1,0 +1,106 @@
+{
+  "nucleus": {
+    "Id": "nucleus",
+    "Name": "Nucleus",
+    "EnzymesLimit": 1,
+    "AtpCosts": [1000],
+    "EnzymesGenerators": [
+      {
+        "EnzymeId": "dipeptidyl_peptidase-iv",
+        "ResourceCosts": [
+          {
+            "ItemId": "oxygen",
+            "Amount": 1
+          },
+          {
+            "ItemId": "carbon",
+            "Amount": 1
+          },
+          {
+            "ItemId": "hydrogen",
+            "Amount": 1
+          },
+          {
+            "ItemId": "nitrogen",
+            "Amount": 1
+          }
+        ]
+      },
+      {
+        "EnzymeId": "dipeptidyl_peptidase-iv",
+        "ResourceCosts": [
+          {
+            "ItemId": "oxygen",
+            "Amount": 10
+          },
+          {
+            "ItemId": "carbon",
+            "Amount": 10
+          },
+          {
+            "ItemId": "hydrogen",
+            "Amount": 10
+          },
+          {
+            "ItemId": "nitrogen",
+            "Amount": 10
+          }
+        ]
+      }
+    ]
+  },
+  "mitochondria": {
+    "Id": "mitochondria",
+    "Name": "Mitochondria",
+    "EnzymesLimit": 2,
+    "AtpCosts": [0, 100, 200, 300],
+    "EnzymesGenerators": [
+      {
+        "EnzymeId": "atp_synthase",
+        "ResourceCosts": []
+      },
+      {
+        "EnzymeId": "atp_synthase",
+        "ResourceCosts": [
+          {
+            "ItemId": "amino_acid",
+            "Amount": 1
+          },
+          {
+            "ItemId": "glucose",
+            "Amount": 1
+          }
+        ]
+      }
+    ]
+  },
+  "ribosome": {
+    "Id": "ribosome",
+    "Name": "Ribosome",
+    "EnzymesLimit": 1,
+    "AtpCosts": [100, 200, 300, 400],
+    "EnzymesGenerators": [
+      {
+        "EnzymeId": "glutamine_synthase",
+        "ResourceCosts": [
+          {
+            "ItemId": "amino_acid",
+            "Amount": 100
+          }
+        ]
+      }
+    ]
+  },
+  "membrane_receptor": {
+    "Id": "membrane_receptor",
+    "Name": "Membrane Receptor",
+    "EnzymesLimit": 1,
+    "AtpCosts": [100, 200, 300, 400],
+    "EnzymesGenerators": [
+      {
+        "EnzymeIds": ["carbonic_anhydrase", "hydrogenases", "nitrogenase", "peroxisome"],
+        "ResourceCosts": []
+      }
+    ]
+  }
+}

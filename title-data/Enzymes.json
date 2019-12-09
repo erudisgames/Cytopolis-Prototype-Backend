@@ -1,0 +1,51 @@
+{
+  "atp_synthase": {
+    "Id": "atp_synthase",
+    "Name": "ATP Synthase",
+    "Description": "Generates ATP.",
+    "OrganelleId": "mitochondria",
+    "GeneratorId": "atp_generator"
+  },
+  "carbonic_anhydrase": {
+    "Id": "carbonic_anhydrase",
+    "Name": "Carbonic Anhydrase",
+    "Description": "Generates carbon.",
+    "OrganelleId": "membrane_receptor",
+    "GeneratorId": "carbon_generator"
+  },
+  "hydrogenases": {
+    "Id": "hydrogenases",
+    "Name": "Hydrogenases",
+    "Description": "Generates hydrogen.",
+    "OrganelleId": "membrane_receptor",
+    "GeneratorId": "hydrogen_generator"
+  },
+  "nitrogenase": {
+    "Id": "nitrogenase",
+    "Name": "Nitrogenase",
+    "Description": "Generates nitrogen.",
+    "OrganelleId": "membrane_receptor",
+    "GeneratorId": "nitrogen_generator"
+  },
+  "peroxisome": {
+    "Id": "peroxisome",
+    "Name": "Peroxisome",
+    "Description": "Generates oxygen.",
+    "OrganelleId": "membrane_receptor",
+    "GeneratorId": "oxygen_generator"
+  },
+  "glutamine_synthase": {
+    "Id": "glutamine_synthase",
+    "Name": "Glutamine Synthase",
+    "Description": "Generates glucose.",
+    "OrganelleId": "ribosome",
+    "GeneratorId": "glucose_generator"
+  },
+  "dipeptidyl_peptidase_iv": {
+    "Id": "dipeptidyl_peptidase-iv",
+    "Name": "Dipeptidyl Peptidase-IV",
+    "Description": "Generates amino acids.",
+    "OrganelleId": "nucleus",
+    "GeneratorId": "amino_acid_generator"
+  }
+}

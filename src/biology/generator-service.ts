@@ -20,6 +20,7 @@ class GeneratorService
         if (generatorTitleData.ItemId === Constants.CURRENCY_ATP)
         {
             const currencyService = <CurrencyService> ServiceLocator.resolve(CurrencyService);
+            log.info("value: ", value);
             currencyService.Add(value, Constants.CURRENCY_ATP);
         }
         else
