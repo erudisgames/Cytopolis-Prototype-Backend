@@ -109,7 +109,7 @@ class CharacterService {
             CharacterName: characterName,
             CharacterType: "Cell"
         };
-        server.GrantCharacterToUser(grantCharRequest);
+        return server.GrantCharacterToUser(grantCharRequest);
     }
 }
 class CurrencyService {
@@ -269,7 +269,7 @@ class Controller {
     CreateCharacter(args) {
         Controller.setupTitleData();
         const characterService = ServiceLocator.resolve(CharacterService);
-        characterService.Create(args.CharacterName);
+        return characterService.Create(args.CharacterName);
     }
     PurchaseOrganelle(args) {
         Controller.setupTitleData();

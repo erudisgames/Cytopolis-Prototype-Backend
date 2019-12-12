@@ -13,11 +13,11 @@ class Controller {
         Controller.registerServices();
     }
 
-    CreateCharacter(args: ICreateCharacterController): void
+    CreateCharacter(args: ICreateCharacterController): PlayFabServerModels.GrantCharacterToUserResult
     {
         Controller.setupTitleData();
         const characterService = <CharacterService> ServiceLocator.resolve(CharacterService);
-        characterService.Create(args.CharacterName);
+        return characterService.Create(args.CharacterName);
     }
 
     PurchaseOrganelle(args: IPurchaseOrganelleController) : void

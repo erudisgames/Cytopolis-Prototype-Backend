@@ -1,12 +1,12 @@
 class CharacterService
 {
-    Create(characterName : string): void {
+    Create(characterName : string): PlayFabServerModels.GrantCharacterToUserResult {
         const grantCharRequest = {
             PlayFabId: currentPlayerId,
             CharacterName: characterName,
             CharacterType: "Cell"
         };
-        server.GrantCharacterToUser(grantCharRequest);
+        return server.GrantCharacterToUser(grantCharRequest);
     }
 }
 
