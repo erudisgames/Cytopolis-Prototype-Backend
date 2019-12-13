@@ -25,6 +25,12 @@ class OrganelleService
         const enzymesCreated = "0";
         inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, posX, posY });
     }
+
+    LevelUp() : void
+    {
+        // Update organelle custom field
+        // Get equipped enzyme generator and update the custom fields using the new level
+    }
 }
 
 export default OrganelleService;

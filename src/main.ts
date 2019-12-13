@@ -36,6 +36,8 @@ class Controller {
         organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString())
     }
 
+    // Level up organelle
+
     PurchaseEnzyme(args : IPurchaseEnzymeController) : void
     {
         Controller.setupTitleData();
@@ -68,6 +70,10 @@ class Controller {
         generatorService.Claim(args.GeneratorItemInstanceId);
     }
 
+    // Get Characters -> A list of characters with some information about their resources, etc..
+    // Attack Player -> Using a number of bacteriophage using some sort of bidding system to see if the player can steal resources
+        // Returns the result of the attack :\
+
     private static setupInventory(characterId: string)
     {
         const inventoryService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
@@ -90,7 +96,6 @@ class Controller {
         ServiceLocator.register(OrganelleService, new OrganelleService());
         ServiceLocator.register(EnzymeService, new EnzymeService());
         ServiceLocator.register(GeneratorService, new GeneratorService());
-
     }
 }
 
