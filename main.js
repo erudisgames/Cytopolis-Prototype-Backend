@@ -152,8 +152,8 @@ class EnzymeService {
     Purchase(enzymeId, costs, organelleItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
         const currencyService = ServiceLocator.resolve(CurrencyService);
-        const resourceCosts = costs.filter(c => c.ItemId == Constants.CURRENCY_ATP);
-        const atpCost = costs.find(c => c.ItemId == Constants.CURRENCY_ATP);
+        const resourceCosts = costs.filter(c => c.ItemId !== Constants.CURRENCY_ATP);
+        const atpCost = costs.find(c => c.ItemId === Constants.CURRENCY_ATP);
         invService.ConsumeItems(resourceCosts);
         if (atpCost != undefined) {
             currencyService.Remove(atpCost.Amount, Constants.CURRENCY_ATP);
