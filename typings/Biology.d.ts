@@ -1,3 +1,11 @@
+// misc
+interface PurchaseCost
+{
+    ItemId: string,
+    Amount: number
+}
+
+// Controller
 interface ICreateCharacterController
 {
     CharacterName : string;
@@ -10,8 +18,6 @@ interface IPurchaseOrganelleController
     AtpCost : number
 }
 
-// TODO: change instanceId for instanceIdCropped
-
 interface IEquipOrganelleController
 {
     CharacterId : string,
@@ -20,10 +26,11 @@ interface IEquipOrganelleController
     PosY : number
 }
 
-interface PurchaseCost
+interface ILevelUpOrganelleController
 {
-    ItemId: string,
-    Amount: number
+    CharacterId : string,
+    OrganelleItemInstanceId : string,
+    AtpCost : number
 }
 
 interface IPurchaseEnzymeController
@@ -57,6 +64,7 @@ interface IClaimGeneratorController
 interface OrganelleCustomData
 {
     enzymesCreated: string,
+    level: string,
     posX?: string,
     posY?: string
 }

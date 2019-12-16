@@ -23,7 +23,8 @@ class OrganelleService
         // TODO: do some verifications like ensuring tile is available
         const inventoryService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
         const enzymesCreated = "0";
-        inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, posX, posY });
+        const level = "1";
+        inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, level, posX, posY });
     }
 
     LevelUp() : void

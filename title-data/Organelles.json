@@ -1,74 +1,23 @@
 {
-  "nucleus": {
-    "Id": "nucleus",
-    "Name": "Nucleus",
-    "EnzymesLimit": 1,
-    "AtpCosts": [1000],
-    "EnzymesGenerators": [
-      {
-        "EnzymeId": "dipeptidyl_peptidase-iv",
-        "ResourceCosts": [
-          {
-            "ItemId": "oxygen",
-            "Amount": 1
-          },
-          {
-            "ItemId": "carbon",
-            "Amount": 1
-          },
-          {
-            "ItemId": "hydrogen",
-            "Amount": 1
-          },
-          {
-            "ItemId": "nitrogen",
-            "Amount": 1
-          }
-        ]
-      },
-      {
-        "EnzymeId": "dipeptidyl_peptidase-iv",
-        "ResourceCosts": [
-          {
-            "ItemId": "oxygen",
-            "Amount": 10
-          },
-          {
-            "ItemId": "carbon",
-            "Amount": 10
-          },
-          {
-            "ItemId": "hydrogen",
-            "Amount": 10
-          },
-          {
-            "ItemId": "nitrogen",
-            "Amount": 10
-          }
-        ]
-      }
-    ]
-  },
   "mitochondria": {
     "Id": "mitochondria",
-    "Name": "Mitochondria",
-    "EnzymesLimit": 2,
-    "AtpCosts": [0, 100, 200, 300],
+    "AtpCosts": [0, 100, 300, 500],
+    "LevelUpAtpCosts": [100, 200, 300, 400],
     "EnzymesGenerators": [
       {
         "EnzymeId": "atp_synthase",
         "ResourceCosts": []
       },
       {
-        "EnzymeId": "atp_synthase",
+        "EnzymeId": "atp_synthase_2",
         "ResourceCosts": [
           {
             "ItemId": "amino_acid",
-            "Amount": 1
+            "Amount": 100
           },
           {
             "ItemId": "glucose",
-            "Amount": 1
+            "Amount": 10
           }
         ]
       }
@@ -76,16 +25,56 @@
   },
   "ribosome": {
     "Id": "ribosome",
-    "Name": "Ribosome",
-    "EnzymesLimit": 1,
-    "AtpCosts": [100, 200, 300, 400],
+    "AtpCosts": [1000,2000],
+    "LevelUpAtpCosts": [1500,3000,5000],
     "EnzymesGenerators": [
       {
         "EnzymeId": "glutamine_synthase",
         "ResourceCosts": [
           {
             "ItemId": "amino_acid",
+            "Amount": 10
+          }
+        ]
+      },
+      {
+        "EnzymeId": "glutamine_synthase_2",
+        "ResourceCosts": [
+          {
+            "ItemId": "amino_acid",
             "Amount": 100
+          },
+          {
+            "ItemId": "glucose",
+            "Amount": 100
+          }
+        ]
+      }
+    ]
+  },
+  "nucleus": {
+    "Id": "nucleus",
+    "AtpCosts": [500],
+    "LevelUpAtpCosts": [500, 1000, 2000],
+    "EnzymesGenerators": [
+      {
+        "EnzymeId": "dipeptidyl_peptidase-iv",
+        "ResourceCosts": [
+          {
+            "ItemId": "oxygen",
+            "Amount": 1
+          },
+          {
+            "ItemId": "carbon",
+            "Amount": 1
+          },
+          {
+            "ItemId": "hydrogen",
+            "Amount": 1
+          },
+          {
+            "ItemId": "nitrogen",
+            "Amount": 1
           }
         ]
       }
@@ -93,14 +82,50 @@
   },
   "membrane_receptor": {
     "Id": "membrane_receptor",
-    "Name": "Membrane Receptor",
-    "EnzymesLimit": 1,
-    "AtpCosts": [100, 200, 300, 400],
+    "AtpCosts": [100, 300, 500, 1000],
+    "LevelUpAtpCosts": [300, 500, 1000],
     "EnzymesGenerators": [
       {
         "EnzymeIds": ["carbonic_anhydrase", "hydrogenases", "nitrogenase", "peroxisome"],
-        "ResourceCosts": []
+        "ResourceCosts": [{"ItemId": "AP", "Amount": 100}]
+      },
+      {
+        "EnzymeIds": ["carbonic_anhydrase", "hydrogenases", "nitrogenase", "peroxisome"],
+        "ResourceCosts": [{"ItemId": "AP", "Amount": 200}]
+      },
+      {
+        "EnzymeIds": ["carbonic_anhydrase", "hydrogenases", "nitrogenase", "peroxisome"],
+        "ResourceCosts": [{"ItemId": "AP", "Amount": 300}]
+      },
+      {
+        "EnzymeIds": ["carbonic_anhydrase", "hydrogenases", "nitrogenase", "peroxisome"],
+        "ResourceCosts": [{"ItemId": "AP", "Amount": 400}]
+      },
+      {
+        "EnzymeIds": ["carbonic_anhydrase", "hydrogenases", "nitrogenase", "peroxisome"],
+        "ResourceCosts": [{"ItemId": "AP", "Amount": 500}]
+      },
+      {
+        "EnzymeIds": ["carbonic_anhydrase", "hydrogenases", "nitrogenase", "peroxisome"],
+        "ResourceCosts": [{"ItemId": "AP", "Amount": 600}]
       }
     ]
+  },
+  "endoplasmic_reticulum": {
+    "Id": "endoplasmic_reticulum",
+    "AtpCosts": [500, 1000, 3000],
+    "LevelUpAtpCosts": [700, 1500, 6000],
+    "EnzymesGenerators": [
+      {
+        "EnzymeId": "crispr",
+        "ResourceCosts": [{"ItemId": "AP", "Amount": 300}]
+      }
+    ]
+  },
+  "plastid": {
+    "Id": "plastid",
+    "AtpCosts": [200, 400, 600, 1000, 1500, 2000, 2500, 3000, 5000, 7000, 10000],
+    "LevelUpAtpCosts": [],
+    "EnzymesGenerators": []
   }
 }

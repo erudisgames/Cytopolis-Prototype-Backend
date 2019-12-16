@@ -2,43 +2,61 @@
   "atp_generator": {
     "Id": "atp_generator",
     "Pace": 1,
-    "Limit": 5,
+    "Limit": 10,
     "ItemId": "AP"
   },
-  "carbon_generator": {
+  "atp_generator_2": {
+    "Id": "atp_generator_2",
+    "Pace": 0.5,
+    "Limit": 100,
+    "ItemId": "AP"
+  },
+    "carbon_generator": {
     "Id": "carbon_generator",
-    "Pace": 10,
+    "Pace": 0.01,
     "Limit": 1,
     "ItemId": "carbon"
   },
   "hydrogen_generator": {
     "Id": "hydrogen_generator",
-    "Pace": 10,
+    "Pace": 0.01,
     "Limit": 1,
     "ItemId": "hydrogen"
   },
   "nitrogen_generator": {
     "Id": "nitrogen_generator",
-    "Pace": 10,
+    "Pace": 0.01,
     "Limit": 1,
     "ItemId": "nitrogen"
   },
   "oxygen_generator": {
     "Id": "oxygen_generator",
-    "Pace": 10,
+    "Pace": 0.01,
     "Limit": 1,
     "ItemId": "oxygen"
   },
   "glucose_generator": {
     "Id": "glucose_generator",
-    "Pace": 100,
+    "Pace": 0.01,
     "Limit": 1,
+    "ItemId": "glucose"
+  },
+  "glucose_generator_2": {
+    "Id": "glucose_generator_2",
+    "Pace": 0.001,
+    "Limit": 10,
     "ItemId": "glucose"
   },
   "amino_acid_generator": {
     "Id": "amino_acid_generator",
-    "Pace": 100,
+    "Pace": 0.1,
     "Limit": 10,
     "ItemId": "amino_acid"
+  },
+  "bacteriophage_generator": {
+    "Id": "bacteriophage_generator",
+    "Pace": 0.01,
+    "Limit": 1,
+    "ItemId": "bacteriophage"
   }
 }

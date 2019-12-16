@@ -151,7 +151,13 @@ class TitleDataService {
 class EnzymeService {
     Purchase(enzymeId, costs, organelleItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
-        invService.ConsumeItems(costs);
+        const currencyService = ServiceLocator.resolve(CurrencyService);
+        const resourceCosts = costs.filter(c => c.ItemId == Constants.CURRENCY_ATP);
+        const atpCost = costs.find(c => c.ItemId == Constants.CURRENCY_ATP);
+        invService.ConsumeItems(resourceCosts);
+        if (atpCost != undefined) {
+            currencyService.Remove(atpCost.Amount, Constants.CURRENCY_ATP);
+        }
         invService.GrantItems([enzymeId]);
         //const enzymeInstanceId = enzyme.ItemGrantResults[0].ItemInstanceId;
         //invService.UpdateItemCustomData(enzymeInstanceId, {orgItemInstanceId: organelleItemInstanceId});
@@ -159,8 +165,7 @@ class EnzymeService {
         const organelle = invService.GetLocalInventoryItem(organelleItemInstanceId);
         const enzymeCreatedString = organelle.CustomData["enzymesCreated"] || "0";
         const enzymesCreated = parseInt(enzymeCreatedString) + 1;
-        log.info(enzymesCreated.toString());
-        invService.UpdateItemCustomData(organelleItemInstanceId, { enzymesCreated: enzymesCreated.toString() });
+        invService.UpdateItemCustomData(organelleItemInstanceId, { enzymesCreated: enzymesCreated.toString(), level: "1" });
     }
     Equip(enzymeItemInstanceId, organelleItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
@@ -259,7 +264,12 @@ class OrganelleService {
         // TODO: do some verifications like ensuring tile is available
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
         const enzymesCreated = "0";
-        inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, posX, posY });
+        const level = "1";
+        inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, level, posX, posY });
+    }
+    LevelUp() {
+        // Update organelle custom field
+        // Get equipped enzyme generator and update the custom fields using the new level
     }
 }
 class Controller {
@@ -283,6 +293,7 @@ class Controller {
         const organelleService = ServiceLocator.resolve(OrganelleService);
         organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString());
     }
+    // Level up organelle
     PurchaseEnzyme(args) {
         Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
@@ -307,6 +318,9 @@ class Controller {
         const generatorService = ServiceLocator.resolve(GeneratorService);
         generatorService.Claim(args.GeneratorItemInstanceId);
     }
+    // Get Characters -> A list of characters with some information about their resources, etc..
+    // Attack Player -> Using a number of bacteriophage using some sort of bidding system to see if the player can steal resources
+    // Returns the result of the attack :\
     static setupInventory(characterId) {
         const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
         inventoryService.characterId = characterId;

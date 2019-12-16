@@ -1,13 +1,25 @@
 import ServiceLocator from "../utils/service-locator";
 import CharacterInventoryService from "../services/character-inventory-service";
 import GeneratorService from "./generator-service";
+import Constants from "../utils/constants";
+import CurrencyService from "../services/currency-service";
 
 class EnzymeService
 {
     Purchase(enzymeId : string, costs : PurchaseCost[], organelleItemInstanceId : string) : void
     {
         const invService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
-        invService.ConsumeItems(costs);
+        const currencyService = <CurrencyService>ServiceLocator.resolve(CurrencyService);
+
+        const resourceCosts = costs.filter(c => c.ItemId == Constants.CURRENCY_ATP);
+        const atpCost = costs.find(c => c.ItemId == Constants.CURRENCY_ATP);
+        invService.ConsumeItems(resourceCosts);
+
+        if (atpCost != undefined)
+        {
+            currencyService.Remove(atpCost.Amount, Constants.CURRENCY_ATP);
+        }
+
         invService.GrantItems([enzymeId]);
         //const enzymeInstanceId = enzyme.ItemGrantResults[0].ItemInstanceId;
         //invService.UpdateItemCustomData(enzymeInstanceId, {orgItemInstanceId: organelleItemInstanceId});
@@ -16,8 +28,7 @@ class EnzymeService
         const organelle = invService.GetLocalInventoryItem(organelleItemInstanceId);
         const enzymeCreatedString = organelle.CustomData["enzymesCreated"] || "0";
         const enzymesCreated = parseInt(enzymeCreatedString) + 1;
-        log.info(enzymesCreated.toString());
-        invService.UpdateItemCustomData(organelleItemInstanceId, {enzymesCreated: enzymesCreated.toString()});
+        invService.UpdateItemCustomData(organelleItemInstanceId, {enzymesCreated: enzymesCreated.toString(), level: "1"});
     }
 
     Equip(enzymeItemInstanceId : string, organelleItemInstanceId : string) : void
