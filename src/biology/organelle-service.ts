@@ -2,6 +2,7 @@ import CharacterInventoryService from "../services/character-inventory-service";
 import ServiceLocator from "../utils/service-locator";
 import CurrencyService from "../services/currency-service";
 import Constants from "../utils/constants";
+import EnzymeService from "./enzyme-service";
 
 class OrganelleService
 {
@@ -27,10 +28,29 @@ class OrganelleService
         inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, level, posX, posY });
     }
 
-    LevelUp() : void
+    LevelUp(itemInstanceId : string, atpPrice : number) : void
     {
-        // Update organelle custom field
-        // Get equipped enzyme generator and update the custom fields using the new level
+        const currencyService = <CurrencyService>ServiceLocator.resolve(CurrencyService);
+        const inventoryService = <CharacterInventoryService>ServiceLocator.resolve(CharacterInventoryService);
+
+        const organelle = inventoryService.GetLocalInventoryItem(itemInstanceId);
+        const level = (Number(organelle.CustomData["level"]) + 1).toString();
+
+        inventoryService.UpdateItemCustomData(itemInstanceId, {level});
+
+        if (atpPrice > 0)
+        {
+            currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
+        }
+
+        const enzymeService = <EnzymeService>ServiceLocator.resolve(EnzymeService);
+        const equippedEnzyme = inventoryService.FindItemWithCustomData("enzyme", "enzymeItemInstanceId", itemInstanceId);
+        if (!equippedEnzyme)
+        {
+            return;
+        }
+
+        enzymeService.UnEquip(equippedEnzyme.ItemInstanceId);
     }
 }
 

@@ -207,10 +207,11 @@ class GeneratorService {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
         const dataService = ServiceLocator.resolve(TitleDataService);
         const enzyme = invService.GetLocalInventoryItem(enzymeItemInstanceId);
+        const organelle = invService.GetLocalInventoryItem(enzyme.CustomData["orgItemInstanceId"]);
         const enzymeTitleData = dataService.enzymes[enzyme.ItemId];
         const generatorTitleData = dataService.generators[enzymeTitleData.GeneratorId];
         const generator = invService.GrantItems([generatorTitleData.Id]);
-        const customData = GeneratorService.generateCustomData(generatorTitleData, enzymeItemInstanceId);
+        const customData = GeneratorService.generateCustomData(generatorTitleData, enzymeItemInstanceId, Number(organelle.CustomData["level"]));
         invService.UpdateItemCustomData(generator.ItemGrantResults[0].ItemInstanceId, customData);
     }
     Destroy(enzymeItemInstanceId) {
@@ -222,11 +223,13 @@ class GeneratorService {
             PlayFabId: currentPlayerId
         });
     }
-    static generateCustomData(generatorTitleData, enzymeItemInstanceId) {
+    static generateCustomData(generatorTitleData, enzymeItemInstanceId, organelleLevel) {
+        const limit = generatorTitleData.Limit * organelleLevel;
+        const pace = generatorTitleData.Pace * organelleLevel;
         return {
             startTime: GeneratorService.nowTimestamp(),
-            limit: generatorTitleData.Limit.toString(),
-            pace: generatorTitleData.Pace.toString(),
+            limit: limit.toString(),
+            pace: pace.toString(),
             resource: generatorTitleData.ItemId,
             enzymeItemInstanceId: enzymeItemInstanceId
         };
@@ -267,9 +270,21 @@ class OrganelleService {
         const level = "1";
         inventoryService.UpdateItemCustomData(itemInstanceId, { enzymesCreated, level, posX, posY });
     }
-    LevelUp() {
-        // Update organelle custom field
-        // Get equipped enzyme generator and update the custom fields using the new level
+    LevelUp(itemInstanceId, atpPrice) {
+        const currencyService = ServiceLocator.resolve(CurrencyService);
+        const inventoryService = ServiceLocator.resolve(CharacterInventoryService);
+        const organelle = inventoryService.GetLocalInventoryItem(itemInstanceId);
+        const level = (Number(organelle.CustomData["level"]) + 1).toString();
+        inventoryService.UpdateItemCustomData(itemInstanceId, { level });
+        if (atpPrice > 0) {
+            currencyService.Remove(atpPrice, Constants.CURRENCY_ATP);
+        }
+        const enzymeService = ServiceLocator.resolve(EnzymeService);
+        const equippedEnzyme = inventoryService.FindItemWithCustomData("enzyme", "enzymeItemInstanceId", itemInstanceId);
+        if (!equippedEnzyme) {
+            return;
+        }
+        enzymeService.UnEquip(equippedEnzyme.ItemInstanceId);
     }
 }
 class Controller {
@@ -293,7 +308,12 @@ class Controller {
         const organelleService = ServiceLocator.resolve(OrganelleService);
         organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString());
     }
-    // Level up organelle
+    LevelUpOrganelle(args) {
+        Controller.setupTitleData();
+        Controller.setupInventory(args.CharacterId);
+        const organelleService = ServiceLocator.resolve(OrganelleService);
+        organelleService.LevelUp(args.OrganelleItemInstanceId, args.AtpCost);
+    }
     PurchaseEnzyme(args) {
         Controller.setupTitleData();
         Controller.setupInventory(args.CharacterId);
@@ -344,6 +364,7 @@ const controller = new Controller();
 handlers["CreateCharacter"] = controller.CreateCharacter;
 handlers["PurchaseOrganelle"] = controller.PurchaseOrganelle;
 handlers["EquipOrganelle"] = controller.EquipOrganelle;
+handlers["LevelUpOrganelle"] = controller.LevelUpOrganelle;
 handlers["PurchaseEnzyme"] = controller.PurchaseEnzyme;
 handlers["EquipEnzyme"] = controller.EquipEnzyme;
 handlers["UnEquipEnzyme"] = controller.UnEquipEnzyme;

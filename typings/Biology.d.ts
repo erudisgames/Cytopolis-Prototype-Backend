@@ -63,7 +63,7 @@ interface IClaimGeneratorController
 
 interface OrganelleCustomData
 {
-    enzymesCreated: string,
+    enzymesCreated?: string,
     level: string,
     posX?: string,
     posY?: string
@@ -80,7 +80,8 @@ interface GeneratorCustomData
     limit?: string,
     pace?: string,
     resource?: string,
-    enzymeItemInstanceId?: string
+    enzymeItemInstanceId?: string,
+    organelleLevel?: string
 }
 
 // Title Data

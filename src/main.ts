@@ -36,7 +36,13 @@ class Controller {
         organelleService.Equip(args.OrganelleItemInstanceId, args.PosX.toString(), args.PosY.toString())
     }
 
-    // Level up organelle
+    LevelUpOrganelle(args : ILevelUpOrganelleController) : void
+    {
+        Controller.setupTitleData();
+        Controller.setupInventory(args.CharacterId);
+        const organelleService = <OrganelleService> ServiceLocator.resolve(OrganelleService);
+        organelleService.LevelUp(args.OrganelleItemInstanceId, args.AtpCost)
+    }
 
     PurchaseEnzyme(args : IPurchaseEnzymeController) : void
     {
@@ -103,6 +109,7 @@ const controller = new Controller();
 handlers["CreateCharacter"] = controller.CreateCharacter;
 handlers["PurchaseOrganelle"] = controller.PurchaseOrganelle;
 handlers["EquipOrganelle"] = controller.EquipOrganelle;
+handlers["LevelUpOrganelle"] = controller.LevelUpOrganelle;
 handlers["PurchaseEnzyme"] = controller.PurchaseEnzyme;
 handlers["EquipEnzyme"] = controller.EquipEnzyme;
 handlers["UnEquipEnzyme"] = controller.UnEquipEnzyme;

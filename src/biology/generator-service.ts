@@ -17,7 +17,6 @@ class GeneratorService
         const data = generator.CustomData;
         const value = GeneratorService.getGeneratorValue(data["startTime"], data["limit"] ,data["pace"]);
 
-
         if (generatorTitleData.ItemId === Constants.CURRENCY_ATP)
         {
             const currencyService = <CurrencyService> ServiceLocator.resolve(CurrencyService);
@@ -44,11 +43,12 @@ class GeneratorService
         const dataService = <TitleDataService> ServiceLocator.resolve(TitleDataService);
 
         const enzyme = invService.GetLocalInventoryItem(enzymeItemInstanceId);
+        const organelle = invService.GetLocalInventoryItem(enzyme.CustomData["orgItemInstanceId"]);
         const enzymeTitleData = dataService.enzymes[enzyme.ItemId];
         const generatorTitleData = dataService.generators[enzymeTitleData.GeneratorId];
 
         const generator = invService.GrantItems([generatorTitleData.Id]);
-        const customData = GeneratorService.generateCustomData(generatorTitleData, enzymeItemInstanceId);
+        const customData = GeneratorService.generateCustomData(generatorTitleData, enzymeItemInstanceId, Number(organelle.CustomData["level"]));
 
         invService.UpdateItemCustomData(generator.ItemGrantResults[0].ItemInstanceId, customData);
     }
@@ -65,12 +65,14 @@ class GeneratorService
         });
     }
 
-    static generateCustomData(generatorTitleData : GeneratorTitleData, enzymeItemInstanceId : string) : GeneratorCustomData
+    static generateCustomData(generatorTitleData : GeneratorTitleData, enzymeItemInstanceId : string, organelleLevel : number) : GeneratorCustomData
     {
+        const limit = generatorTitleData.Limit * organelleLevel;
+        const pace = generatorTitleData.Pace * organelleLevel;
         return {
             startTime: GeneratorService.nowTimestamp(),
-            limit: generatorTitleData.Limit.toString(),
-            pace: generatorTitleData.Pace.toString(),
+            limit: limit.toString(),
+            pace: pace.toString(),
             resource: generatorTitleData.ItemId,
             enzymeItemInstanceId: enzymeItemInstanceId
         };
