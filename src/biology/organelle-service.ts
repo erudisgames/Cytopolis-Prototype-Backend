@@ -44,7 +44,7 @@ class OrganelleService
         }
 
         const enzymeService = <EnzymeService>ServiceLocator.resolve(EnzymeService);
-        const equippedEnzyme = inventoryService.FindItemWithCustomData("enzyme", "enzymeItemInstanceId", itemInstanceId);
+        const equippedEnzyme = inventoryService.FindItemWithCustomData("enzyme", "orgItemInstanceId", itemInstanceId);
         if (!equippedEnzyme)
         {
             return;
