@@ -85,9 +85,9 @@ class GeneratorService
 
     static getGeneratorValue(startTimeS : string, limitS : string, paceS : string) : number
     {
-        const startTime = parseInt(startTimeS);
-        const limit = parseInt(limitS);
-        const pace =  parseInt(paceS);
+        const startTime = Number(startTimeS);
+        const limit = Number(limitS);
+        const pace =  Number(paceS);
         const stopTime = Math.floor(Date.now() / 1000);
 
         const seconds =  stopTime - startTime;
