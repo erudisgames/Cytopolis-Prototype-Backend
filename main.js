@@ -165,7 +165,7 @@ class EnzymeService {
         const organelle = invService.GetLocalInventoryItem(organelleItemInstanceId);
         const enzymeCreatedString = organelle.CustomData["enzymesCreated"] || "0";
         const enzymesCreated = parseInt(enzymeCreatedString) + 1;
-        invService.UpdateItemCustomData(organelleItemInstanceId, { enzymesCreated: enzymesCreated.toString(), level: "1" });
+        invService.UpdateItemCustomData(organelleItemInstanceId, { enzymesCreated: enzymesCreated.toString() });
     }
     Equip(enzymeItemInstanceId, organelleItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);

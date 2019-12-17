@@ -64,7 +64,7 @@ interface IClaimGeneratorController
 interface OrganelleCustomData
 {
     enzymesCreated?: string,
-    level: string,
+    level?: string,
     posX?: string,
     posY?: string
 }
