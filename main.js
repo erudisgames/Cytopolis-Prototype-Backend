@@ -111,6 +111,13 @@ class CharacterService {
         };
         return server.GrantCharacterToUser(grantCharRequest);
     }
+    JoinToClan(characterId, sharedGroupId) {
+        const request = {
+            PlayFabIds: [characterId],
+            SharedGroupId: sharedGroupId
+        };
+        return server.AddSharedGroupMembers(request);
+    }
 }
 class CurrencyService {
     Remove(amount, type) {
@@ -294,7 +301,8 @@ class Controller {
     CreateCharacter(args) {
         Controller.setupTitleData();
         const characterService = ServiceLocator.resolve(CharacterService);
-        return characterService.Create(args.CharacterName);
+        const creationResult = characterService.Create(args.CharacterName);
+        characterService.JoinToClan(creationResult.CharacterId, "DCD5DDF283F4667");
     }
     PurchaseOrganelle(args) {
         Controller.setupTitleData();

@@ -13,11 +13,12 @@ class Controller {
         Controller.registerServices();
     }
 
-    CreateCharacter(args: ICreateCharacterController): PlayFabServerModels.GrantCharacterToUserResult
+    CreateCharacter(args: ICreateCharacterController): void
     {
         Controller.setupTitleData();
         const characterService = <CharacterService> ServiceLocator.resolve(CharacterService);
-        return characterService.Create(args.CharacterName);
+        const creationResult = characterService.Create(args.CharacterName);
+        characterService.JoinToClan(creationResult.CharacterId, "DCD5DDF283F4667");
     }
 
     PurchaseOrganelle(args: IPurchaseOrganelleController) : void
