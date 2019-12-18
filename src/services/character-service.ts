@@ -12,11 +12,17 @@ class CharacterService
     JoinToClan(characterId : string, sharedGroupId : string): PlayFabServerModels.AddSharedGroupMembersResult
     {
         const request = {
-            PlayFabIds: [characterId],
-            SharedGroupId: sharedGroupId
+            Members: [{
+                Id: characterId,
+                Type: "character"
+            }],
+            Group: {
+                Id: sharedGroupId,
+                Type: "group"
+            }
         };
 
-        return server.AddSharedGroupMembers(request);
+        return entity.AddMembers(request);
     }
 }
 

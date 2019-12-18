@@ -113,10 +113,16 @@ class CharacterService {
     }
     JoinToClan(characterId, sharedGroupId) {
         const request = {
-            PlayFabIds: [characterId],
-            SharedGroupId: sharedGroupId
+            Members: [{
+                    Id: characterId,
+                    Type: "character"
+                }],
+            Group: {
+                Id: sharedGroupId,
+                Type: "group"
+            }
         };
-        return server.AddSharedGroupMembers(request);
+        return entity.AddMembers(request);
     }
 }
 class CurrencyService {
