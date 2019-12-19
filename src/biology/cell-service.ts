@@ -5,8 +5,8 @@ class CellService
 {
     GetCellInformation(characterId : string) : CellInformation
     {
-        const charData = this.GetCharacterData(characterId)
-        const items = this.GetItemsFromCharacter(characterId);
+        const charData = CellService.GetCharacterData(characterId);
+        const items = CellService.GetItemsFromCharacter(characterId);
 
         log.info("charData", charData);
         log.info("items", items);
@@ -35,7 +35,7 @@ class CellService
         };
     }
 
-    GetItemsFromCharacter(characterId : string) : ItemInstance[]
+    private static GetItemsFromCharacter(characterId : string) : ItemInstance[]
     {
         let itemsRequest : GetCharacterInventoryRequest = {CharacterId: characterId, PlayFabId: currentPlayerId};
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
@@ -43,10 +43,10 @@ class CellService
         return itemsResponse.Inventory;
     }
 
-    GetCharacterData(characterId : string)
+    private static GetCharacterData(characterId : string)
     {
-        const request = {CharacterId: "", PlayFabId: ""};
-        const response = server.GetCharacterData(request);
+        const request = {CharacterId: characterId, PlayFabId: currentPlayerId};
+        return server.GetCharacterData(request);
     }
 }
 

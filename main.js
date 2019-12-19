@@ -163,8 +163,8 @@ class TitleDataService {
 }
 class CellService {
     GetCellInformation(characterId) {
-        const charData = this.GetCharacterData(characterId);
-        const items = this.GetItemsFromCharacter(characterId);
+        const charData = CellService.GetCharacterData(characterId);
+        const items = CellService.GetItemsFromCharacter(characterId);
         log.info("charData", charData);
         log.info("items", items);
         // GetCharacterData
@@ -186,14 +186,14 @@ class CellService {
             SuccessRate: 0.5
         };
     }
-    GetItemsFromCharacter(characterId) {
+    static GetItemsFromCharacter(characterId) {
         let itemsRequest = { CharacterId: characterId, PlayFabId: currentPlayerId };
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
         return itemsResponse.Inventory;
     }
-    GetCharacterData(characterId) {
-        const request = { CharacterId: "", PlayFabId: "" };
-        const response = server.GetCharacterData(request);
+    static GetCharacterData(characterId) {
+        const request = { CharacterId: characterId, PlayFabId: currentPlayerId };
+        return server.GetCharacterData(request);
     }
 }
 class EnzymeService {
