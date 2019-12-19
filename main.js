@@ -195,6 +195,7 @@ class CellService {
         //const request = {CharacterId: characterId, PlayFabId: masterPlayerAccountId};
         //return server.GetCharacterData(request);
         const response = server.GetAllUsersCharacters({ PlayFabId: masterPlayerAccountId });
+        log.info("GetAllUsersCharacters", response);
         response.Characters.forEach(c => {
             if (c.CharacterId == characterId) {
                 return c;

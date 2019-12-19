@@ -50,6 +50,7 @@ class CellService
         //return server.GetCharacterData(request);
 
         const response = server.GetAllUsersCharacters({PlayFabId: masterPlayerAccountId});
+        log.info("GetAllUsersCharacters", response);
         response.Characters.forEach(c => {
            if (c.CharacterId == characterId)
            {
