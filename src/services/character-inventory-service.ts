@@ -52,7 +52,7 @@ class CharacterInventoryService {
         const consumeItemResults : ConsumeItemResult[] = [];
         for (const purchaseCost of items)
         {
-            const itemInstanceId = purchaseCost.ItemId;
+            const itemInstanceId = purchaseCost.ItemInstanceId;
             const amount = purchaseCost.Amount;
 
             const consumeRequest : ConsumeItemRequest = {

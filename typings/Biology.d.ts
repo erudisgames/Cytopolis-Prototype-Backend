@@ -1,6 +1,13 @@
 // misc
 interface PurchaseCost
 {
+    ItemId : string,
+    ItemInstanceId: string,
+    Amount: number
+}
+
+interface Item
+{
     ItemId: string,
     Amount: number
 }
@@ -112,7 +119,7 @@ declare type CustomDataInterface = OrganelleCustomData | EnzymeCustomData | Gene
 // Return types
 interface CellInformation
 {
-    Items: PurchaseCost[],
+    Items: Item[],
     MinAmountForSuccess: number,
     SuccessRate: number,
     CharacterName: string
