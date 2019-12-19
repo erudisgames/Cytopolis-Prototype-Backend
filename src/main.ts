@@ -110,6 +110,7 @@ class Controller {
         ServiceLocator.register(OrganelleService, new OrganelleService());
         ServiceLocator.register(EnzymeService, new EnzymeService());
         ServiceLocator.register(GeneratorService, new GeneratorService());
+        ServiceLocator.register(CellService, new CellService());
     }
 }
 
