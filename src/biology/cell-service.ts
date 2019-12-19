@@ -1,5 +1,6 @@
 import GetCharacterInventoryRequest = PlayFabServerModels.GetCharacterInventoryRequest;
 import ItemInstance = PlayFabServerModels.ItemInstance;
+import CharacterResult = PlayFabServerModels.CharacterResult;
 
 class CellService
 {
@@ -43,10 +44,19 @@ class CellService
         return itemsResponse.Inventory;
     }
 
-    private static GetCharacterData(characterId : string, masterPlayerAccountId : string)
+    private static GetCharacterData(characterId : string, masterPlayerAccountId : string) : CharacterResult
     {
-        const request = {CharacterId: characterId, PlayFabId: masterPlayerAccountId};
-        return server.GetCharacterData(request);
+        //const request = {CharacterId: characterId, PlayFabId: masterPlayerAccountId};
+        //return server.GetCharacterData(request);
+
+        const response = server.GetAllUsersCharacters({PlayFabId: masterPlayerAccountId});
+        response.Characters.forEach(c => {
+           if (c.CharacterId == characterId)
+           {
+               return c;
+           }
+        });
+        return null;
     }
 }
 

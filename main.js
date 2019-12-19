@@ -192,8 +192,15 @@ class CellService {
         return itemsResponse.Inventory;
     }
     static GetCharacterData(characterId, masterPlayerAccountId) {
-        const request = { CharacterId: characterId, PlayFabId: masterPlayerAccountId };
-        return server.GetCharacterData(request);
+        //const request = {CharacterId: characterId, PlayFabId: masterPlayerAccountId};
+        //return server.GetCharacterData(request);
+        const response = server.GetAllUsersCharacters({ PlayFabId: masterPlayerAccountId });
+        response.Characters.forEach(c => {
+            if (c.CharacterId == characterId) {
+                return c;
+            }
+        });
+        return null;
     }
 }
 class EnzymeService {
