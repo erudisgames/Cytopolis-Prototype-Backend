@@ -6,7 +6,7 @@ class CellService
     GetCellInformation(characterId : string, masterPlayerAccountId : string) : CellInformation
     {
         const charData = CellService.GetCharacterData(characterId, masterPlayerAccountId);
-        const items = CellService.GetItemsFromCharacter(characterId);
+        const items = CellService.GetItemsFromCharacter(characterId, masterPlayerAccountId);
 
         log.info("charData", charData);
         log.info("items", items);
@@ -35,9 +35,9 @@ class CellService
         };
     }
 
-    private static GetItemsFromCharacter(characterId : string) : ItemInstance[]
+    private static GetItemsFromCharacter(characterId : string, masterPlayerAccountId : string) : ItemInstance[]
     {
-        let itemsRequest : GetCharacterInventoryRequest = {CharacterId: characterId, PlayFabId: currentPlayerId};
+        let itemsRequest : GetCharacterInventoryRequest = {CharacterId: characterId, PlayFabId: masterPlayerAccountId};
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
 
         return itemsResponse.Inventory;

@@ -164,7 +164,7 @@ class TitleDataService {
 class CellService {
     GetCellInformation(characterId, masterPlayerAccountId) {
         const charData = CellService.GetCharacterData(characterId, masterPlayerAccountId);
-        const items = CellService.GetItemsFromCharacter(characterId);
+        const items = CellService.GetItemsFromCharacter(characterId, masterPlayerAccountId);
         log.info("charData", charData);
         log.info("items", items);
         // GetCharacterData
@@ -186,8 +186,8 @@ class CellService {
             SuccessRate: 0.5
         };
     }
-    static GetItemsFromCharacter(characterId) {
-        let itemsRequest = { CharacterId: characterId, PlayFabId: currentPlayerId };
+    static GetItemsFromCharacter(characterId, masterPlayerAccountId) {
+        let itemsRequest = { CharacterId: characterId, PlayFabId: masterPlayerAccountId };
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
         return itemsResponse.Inventory;
     }
