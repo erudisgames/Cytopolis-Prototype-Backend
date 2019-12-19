@@ -69,7 +69,15 @@ interface IClaimGeneratorController
 interface IGetCellInformationController
 {
     CharacterId : string,
-    MasterPlayerAccountId: string
+    MasterPlayerAccountId : string
+}
+
+interface IStealCellResourcesController
+{
+    CharacterId : string,
+    TargetCharacterId : string,
+    TargetMasterPlayerAccountId : string,
+    BacteriophageUses : number
 }
 
 // Custom Data
@@ -124,4 +132,10 @@ interface CellInformation
     MinAmountForSuccess: number,
     SuccessRate: number,
     CharacterName: string
+}
+
+interface StealResult
+{
+    IsSuccess: boolean,
+    Items: Item[]
 }

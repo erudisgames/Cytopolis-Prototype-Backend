@@ -189,6 +189,62 @@ class CellService {
             CharacterName: charData.CharacterName
         };
     }
+    StealCellResources(args) {
+        const characterInventoryService = ServiceLocator.resolve(CharacterInventoryService);
+        const bacterophageItemInstance = characterInventoryService.characterItems.find(i => i.ItemId === "bacteriophage");
+        const consumeRequest = [{ ItemInstanceId: bacterophageItemInstance.ItemInstanceId, ItemId: "bacteriophage", Amount: args.BacteriophageUses }];
+        characterInventoryService.ConsumeItems(consumeRequest);
+        // get target player items
+        const items = CellService.GetItemsFromCharacter(args.TargetCharacterId, args.TargetMasterPlayerAccountId);
+        // get number of plastids & resources
+        const resourceItems = [];
+        let numberOfPlastids = 0;
+        for (const item of items) {
+            if (item.ItemClass === "resource") {
+                resourceItems.push(item);
+            }
+            if (item.ItemId === "plastid") {
+                numberOfPlastids++;
+            }
+        }
+        // calculate if steal is succeed
+        if (!CellService.StealSuccess(numberOfPlastids, args.BacteriophageUses)) {
+            return {
+                Items: [],
+                IsSuccess: false
+            };
+        }
+        // Get how many items will be stealing
+        const stealItems = CellService.CalculateStealItems(resourceItems);
+        log.info("stealItems", stealItems);
+        // Consume them from target player
+        // Grant items to current player
+        return {
+            IsSuccess: true,
+            Items: stealItems
+        };
+    }
+    static CalculateStealItems(targetItems) {
+        const stealedItems = [];
+        targetItems.forEach(i => {
+            let amount = Math.round(i.RemainingUses * 0.5);
+            if (amount < 1)
+                amount = 1;
+            stealedItems.push({ ItemId: i.ItemId, ItemInstanceId: i.ItemInstanceId, Amount: amount });
+        });
+        return stealedItems;
+    }
+    static StealSuccess(plastidNumbers, bacterophateNumber) {
+        const successRates = CellService.GetSuccessRates(plastidNumbers);
+        if (bacterophateNumber < successRates.MinAmountForSuccess) {
+            return false;
+        }
+        const bacterophageNumberForSuccessRate = bacterophateNumber - successRates.MinAmountForSuccess + 1;
+        const successChance = successRates.SuccessRate * bacterophageNumberForSuccessRate;
+        if (successChance > 1)
+            return true;
+        return Math.random() < successChance;
+    }
     static GetSuccessRates(plastidNumbers) {
         // calculate the min amount for success = 1 + plastidsNumber
         // calculate success rate = 0.5 /plastidsNumber
@@ -196,6 +252,9 @@ class CellService {
             MinAmountForSuccess: 1 + plastidNumbers,
             SuccessRate: 0.5 / (1 + plastidNumbers)
         };
+    }
+    static ConsumeItemsFromCharacter() {
+        // TODO: do stuff...
     }
     static GetItemsFromCharacter(characterId, masterPlayerAccountId) {
         let itemsRequest = { CharacterId: characterId, PlayFabId: masterPlayerAccountId };
@@ -409,6 +468,12 @@ class Controller {
     GetCellInformation(args) {
         const cellService = ServiceLocator.resolve(CellService);
         return cellService.GetCellInformation(args.CharacterId, args.MasterPlayerAccountId);
+    }
+    StealCellResources(args) {
+        Controller.setupTitleData();
+        Controller.setupInventory(args.CharacterId);
+        const cellService = ServiceLocator.resolve(CellService);
+        return cellService.StealCellResources(args);
     }
     // Get Characters -> A list of characters with some information about their resources, etc..
     // Attack Player -> Using a number of bacteriophage using some sort of bidding system to see if the player can steal resources

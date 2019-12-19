@@ -85,6 +85,15 @@ class Controller {
         return cellService.GetCellInformation(args.CharacterId, args.MasterPlayerAccountId);
     }
 
+    StealCellResources(args : IStealCellResourcesController) : StealResult
+    {
+        Controller.setupTitleData();
+        Controller.setupInventory(args.CharacterId);
+
+        const cellService = <CellService> ServiceLocator.resolve(CellService);
+        return cellService.StealCellResources(args);
+    }
+
     // Get Characters -> A list of characters with some information about their resources, etc..
     // Attack Player -> Using a number of bacteriophage using some sort of bidding system to see if the player can steal resources
         // Returns the result of the attack :\
