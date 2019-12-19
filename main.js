@@ -163,14 +163,22 @@ class TitleDataService {
 }
 class CellService {
     GetCellInformation(characterId) {
+        const charData = this.GetCharacterData(characterId);
         const items = this.GetItemsFromCharacter(characterId);
+        log.info("charData", charData);
+        log.info("items", items);
         // GetCharacterData
         // get inventory
         // get list of resources
         // get number of organelles that are plastid
         // calculate the min amount for success = 1 + plastidsNumber
         // calculate success rate = 0.5 /plastidsNumber
-        return null;
+        return {
+            Items: null,
+            MinAmountForSuccess: 666,
+            SuccessRate: 0.5,
+            CharacterName: "Hello World!!!!"
+        };
     }
     static GetSuccessRates(plastidNumbers) {
         return {
@@ -379,6 +387,10 @@ class Controller {
         const generatorService = ServiceLocator.resolve(GeneratorService);
         generatorService.Claim(args.GeneratorItemInstanceId);
     }
+    GetCellInformation(args) {
+        const cellService = ServiceLocator.resolve(CellService);
+        return cellService.GetCellInformation(args.CharacterId);
+    }
     // Get Characters -> A list of characters with some information about their resources, etc..
     // Attack Player -> Using a number of bacteriophage using some sort of bidding system to see if the player can steal resources
     // Returns the result of the attack :\
@@ -410,3 +422,4 @@ handlers["PurchaseEnzyme"] = controller.PurchaseEnzyme;
 handlers["EquipEnzyme"] = controller.EquipEnzyme;
 handlers["UnEquipEnzyme"] = controller.UnEquipEnzyme;
 handlers["ClaimGenerator"] = controller.ClaimGenerator;
+handlers["GetCellInformation"] = controller.GetCellInformation;

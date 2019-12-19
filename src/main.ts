@@ -6,6 +6,7 @@ import OrganelleService from "./biology/organelle-service";
 import EnzymeService from "./biology/enzyme-service";
 import TitleDataService from "./services/title-data-service";
 import GeneratorService from "./biology/generator-service";
+import CellService from "./biology/cell-service";
 
 class Controller {
     constructor()
@@ -77,6 +78,12 @@ class Controller {
         generatorService.Claim(args.GeneratorItemInstanceId);
     }
 
+    GetCellInformation(args: IGetCellInformationController) : CellInformation
+    {
+        const cellService = <CellService> ServiceLocator.resolve(CellService);
+        return cellService.GetCellInformation(args.CharacterId);
+    }
+
     // Get Characters -> A list of characters with some information about their resources, etc..
     // Attack Player -> Using a number of bacteriophage using some sort of bidding system to see if the player can steal resources
         // Returns the result of the attack :\
@@ -115,3 +122,4 @@ handlers["PurchaseEnzyme"] = controller.PurchaseEnzyme;
 handlers["EquipEnzyme"] = controller.EquipEnzyme;
 handlers["UnEquipEnzyme"] = controller.UnEquipEnzyme;
 handlers["ClaimGenerator"] = controller.ClaimGenerator;
+handlers["GetCellInformation"] = controller.GetCellInformation;

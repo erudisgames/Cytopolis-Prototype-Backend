@@ -5,7 +5,11 @@ class CellService
 {
     GetCellInformation(characterId : string) : CellInformation
     {
+        const charData = this.GetCharacterData(characterId)
         const items = this.GetItemsFromCharacter(characterId);
+
+        log.info("charData", charData);
+        log.info("items", items);
         // GetCharacterData
         // get inventory
 
@@ -14,7 +18,13 @@ class CellService
 
         // calculate the min amount for success = 1 + plastidsNumber
         // calculate success rate = 0.5 /plastidsNumber
-        return null;
+
+        return {
+            Items: null,
+            MinAmountForSuccess: 666,
+            SuccessRate: 0.5,
+            CharacterName: "Hello World!!!!"
+        };
     }
 
     static GetSuccessRates(plastidNumbers : number) : object
