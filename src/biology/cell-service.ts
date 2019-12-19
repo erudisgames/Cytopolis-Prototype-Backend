@@ -11,28 +11,47 @@ class CellService
 
         log.info("charData", charData);
         log.info("items", items);
+
+        const resourceItems : Item[] = [];
+        let numberOfPlastids = 0;
+        for (const item of items)
+        {
+            if (item.ItemClass === "resource")
+            {
+                resourceItems.push({ItemId: item.ItemId, Amount: item.RemainingUses});
+            }
+
+            if (item.ItemId === "plastid")
+            {
+                numberOfPlastids++;
+            }
+        }
+
+        const defenseStats = CellService.GetSuccessRates(numberOfPlastids);
+
         // GetCharacterData
         // get inventory
 
         // get list of resources
         // get number of organelles that are plastid
 
+        return {
+            Items: resourceItems,
+            MinAmountForSuccess: defenseStats.MinAmountForSuccess,
+            SuccessRate: defenseStats.SuccessRate,
+            CharacterName: charData.CharacterName
+        };
+    }
+
+    private static GetSuccessRates(plastidNumbers : number)
+    {
+
         // calculate the min amount for success = 1 + plastidsNumber
         // calculate success rate = 0.5 /plastidsNumber
 
         return {
-            Items: null,
-            MinAmountForSuccess: 666,
-            SuccessRate: 0.5,
-            CharacterName: "Hello World!!!!"
-        };
-    }
-
-    static GetSuccessRates(plastidNumbers : number) : object
-    {
-        return {
-            MinAmountForSuccess: 1,
-            SuccessRate: 0.5
+            MinAmountForSuccess: 1 + plastidNumbers,
+            SuccessRate: 0.5 / (1 + plastidNumbers)
         };
     }
 

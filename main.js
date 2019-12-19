@@ -167,23 +167,34 @@ class CellService {
         const items = CellService.GetItemsFromCharacter(characterId, masterPlayerAccountId);
         log.info("charData", charData);
         log.info("items", items);
+        const resourceItems = [];
+        let numberOfPlastids = 0;
+        for (const item of items) {
+            if (item.ItemClass === "resource") {
+                resourceItems.push({ ItemId: item.ItemId, Amount: item.RemainingUses });
+            }
+            if (item.ItemId === "plastid") {
+                numberOfPlastids++;
+            }
+        }
+        const defenseStats = CellService.GetSuccessRates(numberOfPlastids);
         // GetCharacterData
         // get inventory
         // get list of resources
         // get number of organelles that are plastid
-        // calculate the min amount for success = 1 + plastidsNumber
-        // calculate success rate = 0.5 /plastidsNumber
         return {
-            Items: null,
-            MinAmountForSuccess: 666,
-            SuccessRate: 0.5,
-            CharacterName: "Hello World!!!!"
+            Items: resourceItems,
+            MinAmountForSuccess: defenseStats.MinAmountForSuccess,
+            SuccessRate: defenseStats.SuccessRate,
+            CharacterName: charData.CharacterName
         };
     }
     static GetSuccessRates(plastidNumbers) {
+        // calculate the min amount for success = 1 + plastidsNumber
+        // calculate success rate = 0.5 /plastidsNumber
         return {
-            MinAmountForSuccess: 1,
-            SuccessRate: 0.5
+            MinAmountForSuccess: 1 + plastidNumbers,
+            SuccessRate: 0.5 / (1 + plastidNumbers)
         };
     }
     static GetItemsFromCharacter(characterId, masterPlayerAccountId) {
@@ -351,6 +362,7 @@ class Controller {
         const characterService = ServiceLocator.resolve(CharacterService);
         const creationResult = characterService.Create(args.CharacterName);
         characterService.JoinToClan(creationResult.CharacterId, "DCD5DDF283F4667");
+        return creationResult;
     }
     PurchaseOrganelle(args) {
         Controller.setupTitleData();
