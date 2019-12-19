@@ -1,0 +1,128 @@
+[
+  {
+    "Action": "Read",
+    "Effect": "Allow",
+    "Resource": "pfrn:group--*!*",
+    "Principal": {
+      "ChildOf": {
+        "EntityType": "title",
+        "EntityId": "F7DC7"
+      }
+    },
+    "Comment": "Allow all entities to read the group's metadata, such as name",
+    "Condition": null
+  },
+  {
+    "Action": "*",
+    "Effect": "Allow",
+    "Resource": "pfrn:group--*!*",
+    "Principal": {
+      "MemberOf": {
+        "RoleId": "admins"
+      }
+    },
+    "Comment": "Allow members of the group administrator role to modify the group metadata",
+    "Condition": null
+  },
+  {
+    "Action": "Read",
+    "Effect": "Allow",
+    "Resource": "pfrn:data--*!*/Profile/*",
+    "Principal": {
+      "MemberOf": {
+        "RoleId": "*"
+      }
+    },
+    "Comment": "Allow members of the group to read entity profile data and files",
+    "Condition": null
+  },
+  {
+    "Action": "*",
+    "Effect": "Allow",
+    "Resource": "pfrn:data--*!*/*",
+    "Principal": {
+      "MemberOf": {
+        "RoleId": "admins"
+      }
+    },
+    "Comment": "Allow members of the group administrator role to modify group profile data and files",
+    "Condition": null
+  },
+  {
+    "Action": "*",
+    "Effect": "Allow",
+    "Resource": "pfrn:group--*!*/*",
+    "Principal": {
+      "MemberOf": {
+        "RoleId": "admins"
+      }
+    },
+    "Comment": "Allow members of the group administrator role to do anything with the group",
+    "Condition": null
+  },
+  {
+    "Action": "Read",
+    "Effect": "Allow",
+    "Resource": "pfrn:group--*!*/Members/*",
+    "Principal": {
+      "ChildOf": {
+        "EntityType": "title",
+        "EntityId": "F7DC7"
+      }
+    },
+    "Comment": "Allow all entities to view members of the group",
+    "Condition": null
+  },
+  {
+    "Action": "Read",
+    "Effect": "Allow",
+    "Resource": "pfrn:group--*!*/Roles/*",
+    "Principal": {
+      "ChildOf": {
+        "EntityType": "title",
+        "EntityId": "F7DC7"
+      }
+    },
+    "Comment": "Allow all entities to read all roles in the group",
+    "Condition": null
+  },
+  {
+    "Action": "Create",
+    "Effect": "Allow",
+    "Resource": "pfrn:group--*!*/Applications/*",
+    "Principal": {
+      "ChildOf": {
+        "EntityType": "title",
+        "EntityId": "F7DC7"
+      }
+    },
+    "Comment": "Allow all entities to apply to join the group",
+    "Condition": null
+  },
+  {
+    "Action": "RemoveMember",
+    "Effect": "Allow",
+    "Resource": "pfrn:group--*!*/Members/[SELF]",
+    "Principal": {
+      "ChildOf": {
+        "EntityType": "title",
+        "EntityId": "F7DC7"
+      }
+    },
+    "Comment": "Allow entities to leave the group",
+    "Condition": null
+  },
+  {
+    "Action": "RemoveMember",
+    "Effect": "Allow",
+    "Resource": "pfrn:group--*!*/Roles/*/Members/[SELF]",
+    "Principal": {
+      "ChildOf": {
+        "EntityType": "title",
+        "EntityId": "F7DC7"
+      }
+    },
+    "Comment": "Allow entities to leave any role that they are in",
+    "Condition": null
+  }
+]

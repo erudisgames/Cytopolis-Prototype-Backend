@@ -59,6 +59,11 @@ interface IClaimGeneratorController
     GeneratorItemInstanceId : string
 }
 
+interface IGetCellInformationController
+{
+    CharacterId : string
+}
+
 // Custom Data
 
 interface OrganelleCustomData
@@ -103,3 +108,12 @@ interface GeneratorTitleData
 }
 
 declare type CustomDataInterface = OrganelleCustomData | EnzymeCustomData | GeneratorCustomData;
+
+// Return types
+interface CellInformation
+{
+    Items: PurchaseCost[],
+    MinAmountForSuccess: number,
+    SuccessRate: number,
+    CharacterName: string
+}

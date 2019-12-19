@@ -161,6 +161,33 @@ class TitleDataService {
         }
     }
 }
+class CellService {
+    GetCellInformation(characterId) {
+        const items = this.GetItemsFromCharacter(characterId);
+        // GetCharacterData
+        // get inventory
+        // get list of resources
+        // get number of organelles that are plastid
+        // calculate the min amount for success = 1 + plastidsNumber
+        // calculate success rate = 0.5 /plastidsNumber
+        return null;
+    }
+    static GetSuccessRates(plastidNumbers) {
+        return {
+            MinAmountForSuccess: 1,
+            SuccessRate: 0.5
+        };
+    }
+    GetItemsFromCharacter(characterId) {
+        let itemsRequest = { CharacterId: characterId, PlayFabId: currentPlayerId };
+        let itemsResponse = server.GetCharacterInventory(itemsRequest);
+        return itemsResponse.Inventory;
+    }
+    GetCharacterData(characterId) {
+        const request = { CharacterId: "", PlayFabId: "" };
+        const response = server.GetCharacterData(request);
+    }
+}
 class EnzymeService {
     Purchase(enzymeId, costs, organelleItemInstanceId) {
         const invService = ServiceLocator.resolve(CharacterInventoryService);
