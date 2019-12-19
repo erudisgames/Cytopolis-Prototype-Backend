@@ -3,9 +3,9 @@ import ItemInstance = PlayFabServerModels.ItemInstance;
 
 class CellService
 {
-    GetCellInformation(characterId : string) : CellInformation
+    GetCellInformation(characterId : string, masterPlayerAccountId : string) : CellInformation
     {
-        const charData = CellService.GetCharacterData(characterId);
+        const charData = CellService.GetCharacterData(characterId, masterPlayerAccountId);
         const items = CellService.GetItemsFromCharacter(characterId);
 
         log.info("charData", charData);
@@ -43,9 +43,9 @@ class CellService
         return itemsResponse.Inventory;
     }
 
-    private static GetCharacterData(characterId : string)
+    private static GetCharacterData(characterId : string, masterPlayerAccountId : string)
     {
-        const request = {CharacterId: characterId, PlayFabId: currentPlayerId};
+        const request = {CharacterId: characterId, PlayFabId: masterPlayerAccountId};
         return server.GetCharacterData(request);
     }
 }

@@ -162,8 +162,8 @@ class TitleDataService {
     }
 }
 class CellService {
-    GetCellInformation(characterId) {
-        const charData = CellService.GetCharacterData(characterId);
+    GetCellInformation(characterId, masterPlayerAccountId) {
+        const charData = CellService.GetCharacterData(characterId, masterPlayerAccountId);
         const items = CellService.GetItemsFromCharacter(characterId);
         log.info("charData", charData);
         log.info("items", items);
@@ -191,8 +191,8 @@ class CellService {
         let itemsResponse = server.GetCharacterInventory(itemsRequest);
         return itemsResponse.Inventory;
     }
-    static GetCharacterData(characterId) {
-        const request = { CharacterId: characterId, PlayFabId: currentPlayerId };
+    static GetCharacterData(characterId, masterPlayerAccountId) {
+        const request = { CharacterId: characterId, PlayFabId: masterPlayerAccountId };
         return server.GetCharacterData(request);
     }
 }
@@ -389,7 +389,7 @@ class Controller {
     }
     GetCellInformation(args) {
         const cellService = ServiceLocator.resolve(CellService);
-        return cellService.GetCellInformation(args.CharacterId);
+        return cellService.GetCellInformation(args.CharacterId, args.MasterPlayerAccountId);
     }
     // Get Characters -> A list of characters with some information about their resources, etc..
     // Attack Player -> Using a number of bacteriophage using some sort of bidding system to see if the player can steal resources

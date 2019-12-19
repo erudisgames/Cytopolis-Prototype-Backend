@@ -68,7 +68,8 @@ interface IClaimGeneratorController
 
 interface IGetCellInformationController
 {
-    CharacterId : string
+    CharacterId : string,
+    MasterPlayerAccountId: string
 }
 
 // Custom Data

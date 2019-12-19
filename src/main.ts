@@ -81,7 +81,7 @@ class Controller {
     GetCellInformation(args: IGetCellInformationController) : CellInformation
     {
         const cellService = <CellService> ServiceLocator.resolve(CellService);
-        return cellService.GetCellInformation(args.CharacterId);
+        return cellService.GetCellInformation(args.CharacterId, args.MasterPlayerAccountId);
     }
 
     // Get Characters -> A list of characters with some information about their resources, etc..
