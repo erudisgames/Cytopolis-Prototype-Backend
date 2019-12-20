@@ -508,3 +508,4 @@ handlers["EquipEnzyme"] = controller.EquipEnzyme;
 handlers["UnEquipEnzyme"] = controller.UnEquipEnzyme;
 handlers["ClaimGenerator"] = controller.ClaimGenerator;
 handlers["GetCellInformation"] = controller.GetCellInformation;
+handlers["StealCellResources"] = controller.StealCellResources;
