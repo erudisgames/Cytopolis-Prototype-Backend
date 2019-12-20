@@ -81,9 +81,20 @@ class CellService
         log.info("stealItems", stealItems);
 
         // Consume them from target player
+        CellService.ConsumeItemsFromCharacter(args.TargetCharacterId, args.TargetMasterPlayerAccountId, stealItems);
 
+        const grantedItems = [];
 
-        // Grant items to current player
+        for(const item of stealItems)
+        {
+            for(let i = 0; i < item.Amount; i++)
+            {
+                grantedItems.push(item.ItemId);
+            }
+        }
+
+        // Grant items to current player, WARNING this might blow up if the player steals more than 50 items
+        characterInventoryService.GrantItems(grantedItems);
 
         return {
             IsSuccess: true,
@@ -125,16 +136,13 @@ class CellService
 
     private static GetSuccessRates(plastidNumbers : number)
     {
-        // calculate the min amount for success = 1 + plastidsNumber
-        // calculate success rate = 0.5 /plastidsNumber
-
         return {
             MinAmountForSuccess: 1 + plastidNumbers,
             SuccessRate: 0.5 / (1 + plastidNumbers)
         };
     }
 
-    private static ConsumeItemsFromCharacter()
+    private static ConsumeItemsFromCharacter(characterId : string, masterPlayerAccountid : string, items : PurchaseCost[])
     {
         // TODO: do stuff...
     }
