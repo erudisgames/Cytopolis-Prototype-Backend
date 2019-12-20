@@ -260,7 +260,17 @@ class CellService {
         };
     }
     static ConsumeItemsFromCharacter(characterId, masterPlayerAccountid, items) {
-        // TODO: do stuff...
+        for (const purchaseCost of items) {
+            const itemInstanceId = purchaseCost.ItemInstanceId;
+            const amount = purchaseCost.Amount;
+            const consumeRequest = {
+                CharacterId: characterId,
+                ConsumeCount: amount,
+                ItemInstanceId: itemInstanceId,
+                PlayFabId: masterPlayerAccountid
+            };
+            server.ConsumeItem(consumeRequest);
+        }
     }
     static GetItemsFromCharacter(characterId, masterPlayerAccountId) {
         let itemsRequest = { CharacterId: characterId, PlayFabId: masterPlayerAccountId };

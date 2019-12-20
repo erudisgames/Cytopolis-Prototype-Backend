@@ -144,7 +144,21 @@ class CellService
 
     private static ConsumeItemsFromCharacter(characterId : string, masterPlayerAccountid : string, items : PurchaseCost[])
     {
-        // TODO: do stuff...
+
+        for (const purchaseCost of items)
+        {
+            const itemInstanceId = purchaseCost.ItemInstanceId;
+            const amount = purchaseCost.Amount;
+
+            const consumeRequest = {
+                CharacterId: characterId,
+                ConsumeCount: amount,
+                ItemInstanceId: itemInstanceId,
+                PlayFabId: masterPlayerAccountid
+            };
+
+            server.ConsumeItem(consumeRequest);
+        }
     }
 
     private static GetItemsFromCharacter(characterId : string, masterPlayerAccountId : string) : ItemInstance[]
