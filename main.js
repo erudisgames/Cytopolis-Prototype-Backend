@@ -200,7 +200,7 @@ class CellService {
         const resourceItems = [];
         let numberOfPlastids = 0;
         for (const item of items) {
-            if (item.ItemClass === "resource") {
+            if (item.ItemClass === "resource" && item.ItemId !== "bacteriophage") {
                 resourceItems.push(item);
             }
             if (item.ItemId === "plastid") {

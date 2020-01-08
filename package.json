@@ -1,5 +1,5 @@
 {
-  "name": "playfab-cloud-typescript-bootstrap",
+  "name": "cytopolis-prototype-backend",
   "version": "1.0.0",
   "description": "Small bootstrap to code cloud script using typescript, modules and tests",
   "scripts": {

@@ -1,4 +1,4 @@
-# Bootstrap Playfab Cloud TypeScript
+# Cytopolis Prototype Backend
 
 Includes some base code that implements the following features for cloud scripts:
 

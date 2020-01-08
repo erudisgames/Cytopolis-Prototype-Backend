@@ -39,7 +39,7 @@
     "OrganelleId": "ribosome",
     "GeneratorId": "glucose_generator_2"
   },
-  "dipeptidyl_peptidase_iv": {
+  "dipeptidyl_peptidase-iv": {
     "Id": "dipeptidyl_peptidase-iv",
     "OrganelleId": "nucleus",
     "GeneratorId": "amino_acid_generator"
